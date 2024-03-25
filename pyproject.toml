@@ -1,0 +1,80 @@
+[tool.poetry]
+name = "volur-ai-sdk"
+version = "0.0.0"
+description = ""
+authors = []
+packages = [
+    { include = "volur", from="src" },
+    { include = "volur", from="gen" },
+]
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.12"
+grpcio = "^1.62.0"
+grpcio-tools = "^1.62.0"
+protobuf = "^4.25.3"
+googleapis-common-protos = "^1.62.0"
+pydantic = "^2.6.3"
+pydantic-settings = "^2.2.1"
+aiofiles = "^23.2.1"
+pytest = "^8.1.1"
+
+[tool.poetry.group.dev.dependencies]
+mypy = ">=1"
+ruff = ">=0"
+grpc-stubs = ">=1"
+types-protobuf = ">=4"
+mypy-protobuf = ">=3"
+pytest = ">=8"
+pytest-cov = ">=4"
+types-aiofiles = "^23.2.0.20240311"
+jupyter = "^1.0.0"
+
+[tool.poetry.group.docs.dependencies]
+mkdocstrings-python = "^1.8.0"
+mkdocs-gen-files = "^0.5.0"
+mkdocs-literate-nav = "^0.6.1"
+mkdocs-section-index ="^0.3.8"
+mkdocs-material = "^9.5.12"
+
+
+[tool.poetry.group.deb.dependencies]
+pytest-asyncio = "^0.23.5.post1"
+
+[tool.mypy]
+strict = true
+incremental = false
+explicit_package_bases = true
+mypy_path = [
+    "src",
+    "tests",
+    "gen",
+    "examples",
+]
+plugins = [
+    "pydantic.mypy",
+]
+
+
+[tool.ruff.lint]
+select = [
+    "F", # https://beta.ruff.rs/docs/rules/#pyflakes-f
+    "W", # https://beta.ruff.rs/docs/rules/#warning-w
+    "E", # https://beta.ruff.rs/docs/rules/#error-e
+    "I", # https://beta.ruff.rs/docs/rules/#isort-i
+    "N", # https://beta.ruff.rs/docs/rules/#pep8-naming-n
+    "ANN", # https://beta.ruff.rs/docs/rules/#flake8-annotations-ann
+    "B", # https://beta.ruff.rs/docs/rules/#flake8-bugbear-b
+    "RUF", # https://beta.ruff.rs/docs/rules/#ruff-specific-rules-ruf
+    "PT", # https://beta.ruff.rs/docs/rules/#flake8-pytest-style-pt
+]
+exclude = [
+    ".mypy_cache",
+    ".ruff_cache",
+    ".venv",
+    "__pypackages__",
+]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
