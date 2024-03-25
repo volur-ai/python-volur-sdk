@@ -1,6 +1,11 @@
 default:
     just list
 
+clean:
+    find {{ justfile_directory() }} -type d -name '.venv' -exec rm -rf {} +
+    find {{ justfile_directory() }} -type d -name '.pytest_cache' -exec rm -rf {} +
+    find {{ justfile_directory() }} -type d -name '__pycache__' -exec rm -rf {} +
+
 configure:
     poetry install --sync --no-root
 
