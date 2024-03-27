@@ -1,2 +1,2 @@
-FROM docker.io/library/python:3.11.6@sha256:eb79d3fc1b3d3991133634f12cb58c13e27a1abfe51f1c7ee03f6911bca5d412 AS python
-FROM docker.io/library/python:3.11.6-slim@sha256:1bc6a3e9356d64ea632791653bc71a56340e8741dab66434ab2739ebf6aed29d AS python-slim
+FROM docker.io/library/python:3.12.2@sha256:19973e1796237522ed1fcc1357c766770b47dc15854eafdda055b65953fe5ec1 AS python
+FROM docker.io/library/python:3.12.2-slim@sha256:5dc6f84b5e97bfb0c90abfb7c55f3cacc2cb6687c8f920b64a833a2219875997 AS python-slim
