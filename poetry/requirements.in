@@ -1,4 +1,4 @@
 pip-tools==7.4.1
 poetry==1.8.2
-poetry-plugin-export==1.6.0
+poetry-plugin-export==1.7.1
 poetry-plugin-upgrade==0.2.0
