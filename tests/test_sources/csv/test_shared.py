@@ -236,11 +236,9 @@ def test_quantity_column(
                 column_name="value",
                 unit="piece",
             ),
-            quantity_pb2.QuantityValue(
-                piece=2,
-            ),
-            True,
-            "value is missing",
+            quantity_pb2.QuantityValue(),
+            False,
+            "",
         ),
         (
             "random-value-that-can-not-be-converted",
@@ -299,7 +297,10 @@ def test_load_quantity(
             {
                 "column_name": "1",
             },
-            Column(column_name="column_name"),
+            Column(
+                column_name="column_name",
+                data_type="integer",
+            ),
             Value(
                 value_integer=1,
             ),
@@ -310,7 +311,10 @@ def test_load_quantity(
             {
                 "column_name": "1.2345",
             },
-            Column(column_name="column_name"),
+            Column(
+                column_name="column_name",
+                data_type="float",
+            ),
             Value(
                 value_float=1.2345,
             ),
@@ -321,7 +325,10 @@ def test_load_quantity(
             {
                 "column_name": "True",
             },
-            Column(column_name="column_name"),
+            Column(
+                column_name="column_name",
+                data_type="bool",
+            ),
             Value(
                 value_bool=True,
             ),
@@ -333,9 +340,9 @@ def test_load_quantity(
                 "column_name": "string-column-value",
             },
             Column(column_name="column-name-that-does-not-exist"),
-            None,
-            True,
-            "column column-name-that-does-not-exist does not exist",
+            Value(),
+            False,
+            "",
         ),
     ],
 )
