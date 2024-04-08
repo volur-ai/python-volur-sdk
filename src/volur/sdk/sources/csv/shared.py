@@ -6,10 +6,6 @@ from volur.pork.shared.v1alpha1 import characteristic_pb2, quantity_pb2
 
 class Column(BaseModel):
     column_name: str
-
-
-class CharacteristicColumn(Column):
-    characteristic_name: str
     data_type: Literal[
         "string",
         "bool",
@@ -17,7 +13,11 @@ class CharacteristicColumn(Column):
         "float",
         "datetime",
         "date",
-    ]
+    ] = Field("string", description="The data type of the column")
+
+
+class CharacteristicColumn(Column):
+    characteristic_name: str
 
 
 def load_characteristic_value(
@@ -25,7 +25,7 @@ def load_characteristic_value(
     column: CharacteristicColumn,
 ) -> characteristic_pb2.CharacteristicValue:
     if value is None:
-        raise ValueError("value is missing")
+        return characteristic_pb2.CharacteristicValue()
     if column.data_type == "string":
         return characteristic_pb2.CharacteristicValue(value_string=value)
     elif column.data_type == "integer":
@@ -54,7 +54,7 @@ def load_quantity(
     column: QuantityColumn,
 ) -> quantity_pb2.QuantityValue:
     if value is None:
-        raise ValueError("value is missing")
+        return quantity_pb2.QuantityValue()
     try:
         if column.unit == "kilogram":
             return quantity_pb2.QuantityValue(kilogram=float(value))
@@ -93,12 +93,27 @@ class Value(BaseModel):
 def fetch_value(row: dict[str, str], column: Column) -> Value:
     value = row.get(column.column_name)
     if value is None:
-        raise ValueError(f"column {column.column_name} does not exist")
-    if value.isdigit():
-        return Value(value_integer=int(value))
-    elif value.replace(".", "", 1).isdigit():
-        return Value(value_float=float(value))
-    elif value.lower() in ["true", "false"]:
-        return Value(value_bool=bool(value))
-    else:
+        return Value()
+    if column.data_type == "string":
         return Value(value_string=value)
+    elif column.data_type == "integer":
+        try:
+            _ = int(value)
+            return Value(value_integer=_)
+        except ValueError as error:
+            raise ValueError(
+                f"column {column.column_name} is not an integer"
+            ) from error
+    elif column.data_type == "float":
+        try:
+            _ = float(value)
+            return Value(value_float=_)
+        except ValueError as error:
+            raise ValueError(f"column {column.column_name} is not an float") from error
+    elif column.data_type == "bool":
+        if value.lower() in ["true", "false"]:
+            return Value(value_bool=bool(value))
+        else:
+            raise ValueError(f"column {column.column_name} is not an bool")
+    else:
+        raise ValueError(f"unknown data type {column.data_type}")

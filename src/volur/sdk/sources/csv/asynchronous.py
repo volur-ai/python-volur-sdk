@@ -5,7 +5,6 @@ from typing import Any, AsyncIterator, Iterator
 import aiofiles
 from pydantic import Field
 from volur.pork.materials.v1alpha3 import material_pb2
-from volur.pork.materials.v1alpha3.material_pb2 import Material
 from volur.pork.shared.v1alpha1.characteristic_pb2 import (
     Characteristic,
 )
@@ -28,8 +27,11 @@ class MaterialsCSVFileAsyncSource(MaterialSource):
     def __next__(self: "MaterialSource") -> material_pb2.Material:
         raise NotImplementedError
 
-    _data: AsyncIterator[Material] | None = None
+    _data: AsyncIterator[material_pb2.Material] | None = None
     path: str
+    separator: str = Field(
+        ",", description="The separator used in the CSV file. Default is comma."
+    )
     material_id_column: Column = Field(
         ...,
         description="""
@@ -87,21 +89,25 @@ class MaterialsCSVFileAsyncSource(MaterialSource):
         ],
     )
 
-    def __aiter__(self: "MaterialsCSVFileAsyncSource") -> "MaterialsCSVFileAsyncSource":
+    def __aiter__(
+        self: "MaterialsCSVFileAsyncSource",
+    ) -> AsyncIterator[material_pb2.Material]:
         self._data = self._load()
         return self
 
-    async def __anext__(self: "MaterialsCSVFileAsyncSource") -> Material:
+    async def __anext__(
+        self: "MaterialsCSVFileAsyncSource",
+    ) -> material_pb2.Material:
         if self._data is None:
             self._data = self._load()
-        data = await self._data.__anext__()
+        data = await anext(self._data)
         if data is None:
             raise StopAsyncIteration()
         return data
 
     async def _load(
         self: "MaterialsCSVFileAsyncSource",
-    ) -> AsyncIterator[Material]:
+    ) -> AsyncIterator[material_pb2.Material]:
         _ = Path(self.path)
         if not _.exists():
             raise ValueError("file does not exist")
@@ -109,9 +115,12 @@ class MaterialsCSVFileAsyncSource(MaterialSource):
             raise ValueError("path is not a file")
         async with aiofiles.open(_, mode="r") as source:
             content = await source.read()
-            reader: Iterator[dict[str, Any]] = csv.DictReader(content.splitlines())
+            reader: Iterator[dict[str, Any]] = csv.DictReader(
+                content.splitlines(),
+                delimiter=self.separator,
+            )
             for row in reader:
-                material = Material()
+                material = material_pb2.Material()
                 if (
                     value := fetch_value(
                         row,

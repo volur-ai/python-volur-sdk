@@ -1,6 +1,6 @@
 import csv
 from pathlib import Path
-from typing import Any, AsyncIterator, Iterator
+from typing import Any, AsyncIterator, Coroutine, Iterator
 
 from pydantic import ConfigDict, Field
 from volur.pork.materials.v1alpha3 import material_pb2
@@ -20,7 +20,9 @@ class MaterialsCSVFileSource(MaterialSource):
     def __aiter__(self: "MaterialSource") -> AsyncIterator[material_pb2.Material]:
         raise NotImplementedError
 
-    def __anext__(self: "MaterialSource") -> material_pb2.Material:
+    def __anext__(
+        self: "MaterialSource",
+    ) -> Coroutine[None, None, material_pb2.Material]:
         raise NotImplementedError
 
     model_config = ConfigDict(
