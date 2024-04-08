@@ -5,7 +5,7 @@ import grpc
 from pydantic import ValidationError
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from volur.pork.materials.v1alpha3 import material_pb2, material_pb2_grpc
-from volur.sdk.sources import MaterialSource
+from volur.sdk.sources.csv.base import MaterialSource
 
 
 class VolurClientSettings(BaseSettings):

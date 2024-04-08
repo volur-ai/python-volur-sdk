@@ -1,5 +1,5 @@
 # type: ignore
-from typing import Any, Dict, Iterator
+from typing import Any, AsyncIterator, Dict, Iterator
 
 import google.rpc.status_pb2
 import grpc
@@ -7,7 +7,7 @@ import pytest
 from pydantic import ConfigDict, Field
 from volur.pork.materials.v1alpha3 import material_pb2
 from volur.sdk.client import VolurClient
-from volur.sdk.sources import MaterialSource
+from volur.sdk.sources.csv.base import MaterialSource
 
 
 class UploadMaterialInformationStub:
@@ -34,6 +34,10 @@ class UploadMaterialInformationStub:
 
 
 class FakeMaterialsCSVFileSource(MaterialSource):
+    def __aiter__(self: "MaterialSource") -> AsyncIterator[material_pb2.Material]: ...
+
+    async def __anext__(self: "MaterialSource") -> material_pb2.Material: ...
+
     model_config = ConfigDict(
         arbitrary_types_allowed=True,
     )
