@@ -1,25 +1,49 @@
 # Volur AI SDK
-This is the client API SDK written in Python which we will send to customers to install so they can use the API to upload data. Here you'll find the client, in addition to some examples of how to use the library. 
+
+This is the Python SDK for the Volur AI platform. It provides a set of tools to
+interact with the Volur AI API.
+
+## Install
+
+This library can be installed as a Python package using `pip` or any other
+Python package manager (Poetry, Rye, uv, etc.).
+
+```shell
+pip install git+ssh://git@github.com/volur-ai/python-volur-ai-sdk.git@main
+```
+
+or using `https` protocol:
+
+```shell
+pip install git+https://github.com/volur-ai/python-volur-ai-sdk.git@main
+```
 
 ## Prerequisites
 
-- Python (>=3.11, <3.12),
-- [Poetry][poetry] ([docs][poetry-documentation])
+When developing this SDK, you choose between **containerized** and **local** development.
 
+### Pre-requisites for containerized development
+
+- [Earthly][earthly] ([docs][earthly-documentation]).
+
+### Pre-requisites for local development
+
+- Python (>=3.11, <3.12),
+- [just][just] ([docs][just-documentation]),
+- [Poetry][poetry] ([docs][poetry-documentation]),
+- [Poetry Upgrade Plugin][poetry-plugin-upgrade] ([docs][poetry-plugin-upgrade-documentation]),
+- [buf][buf] ([docs][buf-documentation]),
+
+[earthly]: https://github.com/earthly/earthly
+[earthly-documentation]: https://docs.earthly.dev/
+[just]: https://github.com/casey/just
+[just-documentation]: https://just.systems/man/en/
 [poetry]: https://github.com/python-poetry/poetry
 [poetry-documentation]: https://python-poetry.org/docs/
-[azure-cli]: https://github.com/Azure/azure-cli
-[azure-cli-documentation]: https://learn.microsoft.com/en-us/cli/azure/
-[make]: https://github.com/mirror/make
-[make-documentation]: https://www.gnu.org/software/make/manual/html_node/index.html
-
-## Configure
-
-This command will install required Python dependencies:
-
-```shell
-make configure
-```
+[poetry-plugin-upgrade]: https://github.com/apoclyps/poetry-plugin-upgrade
+[poetry-plugin-upgrade-documentation]: https://github.com/apoclyps/poetry-plugin-upgrade?tab=readme-ov-file#poetry-plugin-upgrade
+[buf]: https://github.com/bufbuild/buf
+[buf-documentation]: https://buf.build/docs/introduction
 
 ## Reference guide
 The Client SDK Reference Guide can be found in the interactive notebook `client_SDK_reference_guide.ipynb`. Here you'll find general usage information about the SDK.
@@ -36,6 +60,20 @@ You'll need an authentication token to be able to run the notebook. Please conta
 
 ## Development
 
+## Configure
+
+This command will install required Python dependencies:
+
+```shell
+just configure
+```
+
+or
+
+```shell
+earthly +configure
+```
+
 ### Formatting, linting, type checking and testing
 
 We use a set of tools to improve the quality of our code:
@@ -43,18 +81,56 @@ We use a set of tools to improve the quality of our code:
 - `ruff` as Python linter and code formatter,
 - `mypy` for type checking
 
-You can run these tools with `Make`.
+You can run these tools with `just` or `Earthly`.
 
 #### Static validation
 
 ```shell
-make validate
+just validate
+```
+
+or
+
+```shell
+earthly +validate
 ```
 
 #### Resolve auto-fixable issues
 
 ```shell
-make validate-fix
+just fix
+```
+
+or
+
+```shell
+earthly +fix
+```
+
+### Run tests
+
+```shell
+just test
+```
+
+or
+
+```shell
+earthly +test
+```
+
+## Other useful commands
+
+You can list all available recipes by running:
+
+```shell
+just
+```
+
+or
+
+```shell
+earthly ls
 ```
 
 ## Documentation
