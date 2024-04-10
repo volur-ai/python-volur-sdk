@@ -5,11 +5,32 @@ isort:skip_file
 import abc
 import collections.abc
 import grpc
+import grpc.aio
+import typing
 import volur.pork.product_inventory.v1alpha1.product_inventory_pb2
 
+_T = typing.TypeVar('_T')
+
+class _MaybeAsyncIterator(collections.abc.AsyncIterator[_T], collections.abc.Iterator[_T], metaclass=abc.ABCMeta):
+    ...
+
+class _ServicerContext(grpc.ServicerContext, grpc.aio.ServicerContext):  # type: ignore
+    ...
+
 class ProductInventoryInformationServiceStub:
-    def __init__(self, channel: grpc.Channel) -> None: ...
+    def __init__(self, channel: typing.Union[grpc.Channel, grpc.aio.Channel]) -> None: ...
     UploadProductInventoryInformation: grpc.StreamStreamMultiCallable[
+        volur.pork.product_inventory.v1alpha1.product_inventory_pb2.UploadProductInventoryInformationRequest,
+        volur.pork.product_inventory.v1alpha1.product_inventory_pb2.UploadProductInventoryInformationResponse,
+    ]
+    """UploadProductInventoryInformation allows client to upload a stream of product
+    inventory information to the server and receive a stream of responses
+    containing the status of each upload. This supports batch processing and
+    real-time feedback on the operation.
+    """
+
+class ProductInventoryInformationServiceAsyncStub:
+    UploadProductInventoryInformation: grpc.aio.StreamStreamMultiCallable[
         volur.pork.product_inventory.v1alpha1.product_inventory_pb2.UploadProductInventoryInformationRequest,
         volur.pork.product_inventory.v1alpha1.product_inventory_pb2.UploadProductInventoryInformationResponse,
     ]
@@ -23,13 +44,13 @@ class ProductInventoryInformationServiceServicer(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def UploadProductInventoryInformation(
         self,
-        request_iterator: collections.abc.Iterator[volur.pork.product_inventory.v1alpha1.product_inventory_pb2.UploadProductInventoryInformationRequest],
-        context: grpc.ServicerContext,
-    ) -> collections.abc.Iterator[volur.pork.product_inventory.v1alpha1.product_inventory_pb2.UploadProductInventoryInformationResponse]:
+        request_iterator: _MaybeAsyncIterator[volur.pork.product_inventory.v1alpha1.product_inventory_pb2.UploadProductInventoryInformationRequest],
+        context: _ServicerContext,
+    ) -> typing.Union[collections.abc.Iterator[volur.pork.product_inventory.v1alpha1.product_inventory_pb2.UploadProductInventoryInformationResponse], collections.abc.AsyncIterator[volur.pork.product_inventory.v1alpha1.product_inventory_pb2.UploadProductInventoryInformationResponse]]:
         """UploadProductInventoryInformation allows client to upload a stream of product
         inventory information to the server and receive a stream of responses
         containing the status of each upload. This supports batch processing and
         real-time feedback on the operation.
         """
 
-def add_ProductInventoryInformationServiceServicer_to_server(servicer: ProductInventoryInformationServiceServicer, server: grpc.Server) -> None: ...
+def add_ProductInventoryInformationServiceServicer_to_server(servicer: ProductInventoryInformationServiceServicer, server: typing.Union[grpc.Server, grpc.aio.Server]) -> None: ...

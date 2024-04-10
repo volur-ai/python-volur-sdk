@@ -4,6 +4,7 @@ isort:skip_file
 """
 import builtins
 import google.protobuf.descriptor
+import google.protobuf.duration_pb2
 import google.protobuf.message
 import google.protobuf.timestamp_pb2
 import google.type.date_pb2
@@ -52,6 +53,7 @@ class CharacteristicValue(google.protobuf.message.Message):
     VALUE_BOOL_FIELD_NUMBER: builtins.int
     VALUE_TIMESTAMP_FIELD_NUMBER: builtins.int
     VALUE_DATE_FIELD_NUMBER: builtins.int
+    VALUE_DURATION_FIELD_NUMBER: builtins.int
     value_float: builtins.float
     """A floating-point value."""
     value_integer: builtins.int
@@ -66,6 +68,9 @@ class CharacteristicValue(google.protobuf.message.Message):
     @property
     def value_date(self) -> google.type.date_pb2.Date:
         """A date value."""
+    @property
+    def value_duration(self) -> google.protobuf.duration_pb2.Duration:
+        """A duration value."""
     def __init__(
         self,
         *,
@@ -75,8 +80,9 @@ class CharacteristicValue(google.protobuf.message.Message):
         value_bool: builtins.bool = ...,
         value_timestamp: google.protobuf.timestamp_pb2.Timestamp | None = ...,
         value_date: google.type.date_pb2.Date | None = ...,
+        value_duration: google.protobuf.duration_pb2.Duration | None = ...,
     ) -> None: ...
-    def HasField(self, field_name: typing_extensions.Literal["value_date", b"value_date", "value_timestamp", b"value_timestamp"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing_extensions.Literal["value_bool", b"value_bool", "value_date", b"value_date", "value_float", b"value_float", "value_integer", b"value_integer", "value_string", b"value_string", "value_timestamp", b"value_timestamp"]) -> None: ...
+    def HasField(self, field_name: typing_extensions.Literal["value_date", b"value_date", "value_duration", b"value_duration", "value_timestamp", b"value_timestamp"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing_extensions.Literal["value_bool", b"value_bool", "value_date", b"value_date", "value_duration", b"value_duration", "value_float", b"value_float", "value_integer", b"value_integer", "value_string", b"value_string", "value_timestamp", b"value_timestamp"]) -> None: ...
 
 global___CharacteristicValue = CharacteristicValue
