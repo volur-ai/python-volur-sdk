@@ -1,67 +1,27 @@
-from dataclasses import dataclass
-from typing import Dict, Iterator, List, Union
+import asyncio
+from dataclasses import dataclass, field
 
-import grpc
-from pydantic import ValidationError
-from pydantic_settings import BaseSettings, SettingsConfigDict
-from volur.pork.materials.v1alpha3 import material_pb2, material_pb2_grpc
+from loguru import logger
+from volur.api.client import VolurApiAsyncClient
 from volur.sdk.sources.csv.base import MaterialSource
-
-
-class VolurClientSettings(BaseSettings):
-    model_config = SettingsConfigDict(
-        env_file=".env",
-        env_file_encoding="utf-8",
-        env_prefix="VOLUR_",
-    )
-    auth_token: str | None
 
 
 @dataclass
 class VolurClient:
-    def __init__(
+    api: VolurApiAsyncClient = field(default_factory=VolurApiAsyncClient)
+
+    def upload_materials_information(
         self: "VolurClient",
-        auth_token: str | None = None,
-        host: str = "localhost",
-        port: int = 50051,
+        materials: MaterialSource,
     ) -> None:
-        try:
-            settings = VolurClientSettings()
-            self.metadata = (("authorization", f"Bearer {settings.auth_token}"),)
-        except ValidationError as exc:
-            if not auth_token:
-                raise ValueError(
-                    "Set VOLUR_AUTH_TOKEN variable or pass auth_token."
-                ) from exc
-            else:
-                self.metadata = (("authorization", f"Bearer {auth_token}"),)
-        self.channel = grpc.insecure_channel(f"{host}:{port}")
-        self.material_stub = material_pb2_grpc.MaterialInformationServiceStub(
-            self.channel
+        result = asyncio.run(
+            self.api.upload_materials_information(materials),
+            debug=self.api.settings.debug,
         )
-
-    def upload_materials(
-        self: "VolurClient", source: MaterialSource
-    ) -> Iterator[
-        Dict[str, Union[str, List[material_pb2.UploadMaterialInformationResponse]]]
-    ]:
-        def generate_requests(
-            materials: MaterialSource,
-        ) -> Iterator[material_pb2.UploadMaterialInformationRequest]:
-            for material in materials:
-                yield material_pb2.UploadMaterialInformationRequest(material=material)
-
-        responses = []
-
-        for response in self.material_stub.UploadMaterialInformation(
-            generate_requests(source), metadata=self.metadata
-        ):
-            responses.append(response)
-
-        if responses:
-            yield {
-                "status": f"Successfully uploaded {len(responses)} materials.",
-                "responses": responses,
-            }
-        else:
-            yield {"status": "No materials were uploaded.", "responses": responses}
+        if result.code != 0:
+            logger.error(
+                "error occurred while uploading materials information",
+                response_status_code=result.code,
+                response_status_message=result.message,
+            )
+        logger.info("successfully uploaded materials information")
