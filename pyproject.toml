@@ -30,6 +30,7 @@ pytest-cov = ">=4"
 pytest-asyncio = ">=0"
 types-aiofiles = ">=23"
 jupyter = ">=1"
+faker = ">=24"
 
 [tool.poetry.group.docs.dependencies]
 mkdocstrings-python = "^1"

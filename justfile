@@ -36,15 +36,15 @@ generate:
 
 # fix auto-fixable issues
 fix:
-    poetry run ruff format src tests && \
-    poetry run ruff check --fix --unsafe-fixes src tests
+    poetry run ruff format src tests examples && \
+    poetry run ruff check --fix --unsafe-fixes src tests examples
 
 # validate code and configuration
 validate:
     poetry check --lock && \
-    poetry run ruff format --check src tests *.ipynb && \
-    poetry run ruff check src tests *.ipynb && \
-    poetry run mypy src tests
+    poetry run ruff format --check src tests examples *.ipynb && \
+    poetry run ruff check src tests examples *.ipynb && \
+    poetry run mypy src tests examples
 
 # run tests
 test:

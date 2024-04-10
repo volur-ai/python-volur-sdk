@@ -18,6 +18,11 @@ or using `https` protocol:
 pip install git+https://github.com/volur-ai/python-volur-ai-sdk.git@main
 ```
 
+## How to use the library
+
+To see the examples of how to use the library, please refer to the
+`examples` folder.
+
 ## Prerequisites
 
 When developing this SDK, you choose between **containerized** and **local** development.
