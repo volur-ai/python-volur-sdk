@@ -5,13 +5,34 @@ isort:skip_file
 import abc
 import collections.abc
 import grpc
+import grpc.aio
+import typing
 import volur.pork.demand.v1alpha2.demand_pb2
+
+_T = typing.TypeVar('_T')
+
+class _MaybeAsyncIterator(collections.abc.AsyncIterator[_T], collections.abc.Iterator[_T], metaclass=abc.ABCMeta):
+    ...
+
+class _ServicerContext(grpc.ServicerContext, grpc.aio.ServicerContext):  # type: ignore
+    ...
 
 class DemandInformationServiceStub:
     """Service definition for uploading the demand of products."""
 
-    def __init__(self, channel: grpc.Channel) -> None: ...
+    def __init__(self, channel: typing.Union[grpc.Channel, grpc.aio.Channel]) -> None: ...
     UploadDemandInformation: grpc.StreamStreamMultiCallable[
+        volur.pork.demand.v1alpha2.demand_pb2.UploadDemandInformationRequest,
+        volur.pork.demand.v1alpha2.demand_pb2.UploadDemandInformationResponse,
+    ]
+    """RPC method for uploading demand information.
+    It takes a stream of UploadDemandInformationRequest and returns a stream of UploadDemandInformationResponse.
+    """
+
+class DemandInformationServiceAsyncStub:
+    """Service definition for uploading the demand of products."""
+
+    UploadDemandInformation: grpc.aio.StreamStreamMultiCallable[
         volur.pork.demand.v1alpha2.demand_pb2.UploadDemandInformationRequest,
         volur.pork.demand.v1alpha2.demand_pb2.UploadDemandInformationResponse,
     ]
@@ -25,11 +46,11 @@ class DemandInformationServiceServicer(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def UploadDemandInformation(
         self,
-        request_iterator: collections.abc.Iterator[volur.pork.demand.v1alpha2.demand_pb2.UploadDemandInformationRequest],
-        context: grpc.ServicerContext,
-    ) -> collections.abc.Iterator[volur.pork.demand.v1alpha2.demand_pb2.UploadDemandInformationResponse]:
+        request_iterator: _MaybeAsyncIterator[volur.pork.demand.v1alpha2.demand_pb2.UploadDemandInformationRequest],
+        context: _ServicerContext,
+    ) -> typing.Union[collections.abc.Iterator[volur.pork.demand.v1alpha2.demand_pb2.UploadDemandInformationResponse], collections.abc.AsyncIterator[volur.pork.demand.v1alpha2.demand_pb2.UploadDemandInformationResponse]]:
         """RPC method for uploading demand information.
         It takes a stream of UploadDemandInformationRequest and returns a stream of UploadDemandInformationResponse.
         """
 
-def add_DemandInformationServiceServicer_to_server(servicer: DemandInformationServiceServicer, server: grpc.Server) -> None: ...
+def add_DemandInformationServiceServicer_to_server(servicer: DemandInformationServiceServicer, server: typing.Union[grpc.Server, grpc.aio.Server]) -> None: ...
