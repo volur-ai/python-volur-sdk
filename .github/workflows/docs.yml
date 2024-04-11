@@ -11,6 +11,10 @@ concurrency:
 jobs:
   main:
     runs-on: ubuntu-latest
+    # I kept this workflow, but it is breaking OpenTofu and Spacelift
+    # Deployment of GitHub pages leads to a 403 error that GitHub provider receives
+    # See issue https://github.com/integrations/terraform-provider-github/issues/1594
+    if: false
     permissions:
       contents: read
       pages: write
