@@ -20,6 +20,8 @@ pip install git+https://github.com/volur-ai/python-volur-ai-sdk.git@main
 
 ## How to use the library
 
+See the [documentation](https://congenial-carnival-wopj8rk.pages.github.io/).
+
 To see the examples of how to use the library, please refer to the
 `examples` folder.
 
@@ -140,18 +142,36 @@ earthly ls
 
 ## Documentation
 
-### Generate pages for client docs
+We use `google`-style docstrings in our code. The documentation is generated
+using:
 
-We use the [mkdocs-gen-files](https://github.com/oprypin/mkdocs-gen-files) plugin to programmatically generate documentation pages during build.
+- https://github.com/mkdocstrings/python,
+- https://github.com/squidfunk/mkdocs-material.
 
-#### Build and serve docs
+### Generate documentation
+
+We use the [mkdocs-gen-files](https://github.com/oprypin/mkdocs-gen-files) plugin to programmatically generate documentation
+pages during build.
+
+To generate documentation, run:
 
 ```shell
-mkdocs build
+just build-docs
 ```
+
+or
 
 ```shell
-mkdocs serve --dev-addr="0.0.0.0:8000"
+earthly +build-docs
 ```
 
-The docs should be available on http://0.0.0.0:8000/.
+#### Serve documentation website
+
+> [!WARNING]
+> It is not possible to use container based development for documentation serving.
+
+```shell
+just serve-docs
+```
+
+And then open your browser using the provided link in the output.

@@ -3,19 +3,20 @@ repo_url: https://github.com/volur-ai/python-volur-ai-sdk
 theme:
   name: material
 plugins:
-- search
-- gen-files:
-    scripts:
+  - search
+  - gen-files:
+      scripts:
         - scripts/gen_pages.py
-- literate-nav:
-    nav_file: SUMMARY.md
-- section-index
-- mkdocstrings:
-    default_handler: python
-    handlers:
-      python:
-        paths: [src/volur]
-
+  - literate-nav:
+      nav_file: SUMMARY.md
+  - section-index
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          paths:
+            - src
+            - gen
 nav:
-    - Code Reference: reference/
-    - 'index.md'
+  - Code Reference: reference/
+  - 'index.md'
