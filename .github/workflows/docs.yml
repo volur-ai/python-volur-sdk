@@ -1,0 +1,32 @@
+name: Publish documentation
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: "docs-${{ github.repository }}"
+  cancel-in-progress: false
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: earthly/actions-setup@v1
+        with:
+          version: ">=0.8 <1.0"
+      - run: |
+          earthly --strict +build-docs
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - uses: actions/deploy-pages@v4
+        id: deploy-pages
+      - run: |
+          echo "Documentation published at ${{ steps.deploy-pages.outputs.page_url }}

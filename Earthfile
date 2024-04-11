@@ -38,8 +38,9 @@ generate-requirements:
 configure:
     FROM +install-base
     COPY poetry.toml pyproject.toml poetry.lock ./
+    COPY mkdocs.yml ./
     RUN poetry install --sync --no-root
-    COPY --dir src gen tests .
+    COPY --dir src gen tests examples scripts docs .
     RUN poetry install --sync
 
 # upgrade-dependencies upgrades the library dependencies to their latest compatible version
@@ -70,10 +71,12 @@ generate:
 # fix fixes all auto-fixable formatting and linting issues
 fix:
     FROM +configure
-    RUN poetry run ruff format src tests && \
-        poetry run ruff check --fix --unsafe-fixes src tests
+    RUN poetry run ruff format src tests examples scripts && \
+        poetry run ruff check --fix --unsafe-fixes src tests examples scripts
     SAVE ARTIFACT /srv/workspace/src AS LOCAL src
     SAVE ARTIFACT /srv/workspace/tests AS LOCAL tests
+    SAVE ARTIFACT /srv/workspace/examples AS LOCAL examples
+    SAVE ARTIFACT /srv/workspace/scripts AS LOCAL scripts
 
 # validate validates the library (project configuration, linting and static
 # type checking)
@@ -81,23 +84,24 @@ validate:
     FROM +configure
     COPY *.ipynb .
     RUN poetry check --lock && \
-        poetry run ruff format --check src tests *.ipynb && \
-        poetry run ruff check src tests *.ipynb && \
-        poetry run mypy src tests
+        poetry run ruff format --check src tests examples scripts *.ipynb && \
+        poetry run ruff check src tests examples scripts *.ipynb && \
+        poetry run mypy src tests examples scripts
 
 # test runs the library unit tests
 test:
     FROM +configure
     RUN poetry run pytest tests
 
-# ci runs the CI pipeline (linting, static type checking and unit tests) locally
-ci:
-    BUILD +validate
-    BUILD +test
-
 # build-docs builds the documentation using mkdocs
 build-docs:
     FROM +configure
-    COPY mkdocs.yml .
-    COPY --dir docs scripts .
     RUN poetry run mkdocs build
+    SAVE ARTIFACT /srv/workspace/docs AS LOCAL docs
+    SAVE ARTIFACT /srv/workspace/site AS LOCAL site
+
+# ci runs the CI pipeline (linting, static type checking, unit tests, documentation generation) locally
+ci:
+    BUILD +validate
+    BUILD +test
+    BUILD +build-docs
