@@ -36,19 +36,27 @@ generate:
 
 # fix auto-fixable issues
 fix:
-    poetry run ruff format src tests examples && \
-    poetry run ruff check --fix --unsafe-fixes src tests examples
+    poetry run ruff format src tests examples scripts && \
+    poetry run ruff check --fix --unsafe-fixes src tests examples scripts
 
 # validate code and configuration
 validate:
     poetry check --lock && \
-    poetry run ruff format --check src tests examples *.ipynb && \
-    poetry run ruff check src tests examples *.ipynb && \
-    poetry run mypy src tests examples
+    poetry run ruff format --check src tests examples scripts *.ipynb && \
+    poetry run ruff check src tests examples scripts *.ipynb && \
+    poetry run mypy src tests examples scripts
 
 # run tests
 test:
     poetry run pytest tests
 
+# build documentation
+build-docs:
+    poetry run mkdocs build --strict
+
+# serve documentation
+serve-docs:
+    poetry run mkdocs serve
+
 # run CI locally
-ci: validate test
+ci: validate test build-docs
