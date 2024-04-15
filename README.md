@@ -142,8 +142,10 @@ earthly ls
 
 ## Documentation
 
-We use `google`-style docstrings in our code. The documentation is generated
-using:
+We use [`google`][google-docstrings]-style docstrings in our code. The
+documentation is generated using:
+
+[google-docstrings]: https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings
 
 - https://github.com/mkdocstrings/python,
 - https://github.com/squidfunk/mkdocs-material.

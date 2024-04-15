@@ -29,14 +29,11 @@ class MaterialsCSVFileSource(MaterialsSource):
 
     Arguments:
         path: A path to the CSV file containing materials information.
-        material_id_column: A column that is used to uniquely identify a material
-        in a dataset
+        material_id_column: A column that is used to uniquely identify a material in a dataset
         delimiter: A delimiter used in CSV file
-        plant_id_column: A column that is used to reference a production plant
-        where material is used
+        plant_id_column: A column that is used to reference a production plant where material is used
         quantity_column: A column that represent the quantity of material
-        characteristics_columns: Specifies a list of arbitrary characteristics
-        of a given material
+        characteristics_columns: Specifies a list of arbitrary characteristics of a given material
 
     Examples:
         ### Minimal working example
