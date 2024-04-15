@@ -11,16 +11,42 @@ from volur.pork.materials.v1alpha3.material_pb2 import (
 from volur.pork.materials.v1alpha3.material_pb2_grpc import (
     MaterialInformationServiceStub,
 )
-from volur.sdk.sources.csv.base import MaterialSource
+from volur.sdk.sources.csv.base import MaterialsSource
 
 
 @dataclass
 class VolurApiAsyncClient:
+    """A client for interacting with Völur API.
+
+    This client is used to interact with the Völur API to upload the data
+    securely and effectively. See the actual methods for more details.
+
+    Note:
+        This client was not intended to be used directly, instead use the SDK client
+        from [volur.sdk.client.VolurClient][volur.sdk.client].
+    """
+
     settings: VolurApiSettings = field(default_factory=VolurApiSettings)
 
     async def upload_materials_information(
-        self: "VolurApiAsyncClient", materials: MaterialSource
+        self: "VolurApiAsyncClient",
+        materials: MaterialsSource,
     ) -> Status:
+        """Uploads Materials Information to the Völur platform using the Völur
+        API.
+
+        This method is using a source to get the materials data and then send
+        it to the Völur API. This method is asynchronous and will return a
+        status of the operation.
+
+        Args:
+            materials: a source of materials data to be uploaded to the Völur
+                platform.
+
+        Returns:
+            The status of the operation.
+        """
+
         async def generate_requests() -> (
             AsyncIterator[UploadMaterialInformationRequest]
         ):
