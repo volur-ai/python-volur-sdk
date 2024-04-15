@@ -1,3 +1,5 @@
+"""Various classes and methods used accross sources code"""
+
 import csv
 from pathlib import Path
 from typing import Iterator, Literal

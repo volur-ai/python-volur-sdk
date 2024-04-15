@@ -10,7 +10,7 @@ from volur.pork.shared.v1alpha1.quantity_pb2 import Quantity, QuantityValue
 from volur.sdk.sources.csv import (
     CharacteristicColumn,
     Column,
-    MaterialsCSVFileAsyncSource,
+    MaterialsCSVFileSource,
     QuantityColumn,
 )
 
@@ -30,8 +30,8 @@ def csv_file(tmpdir: Path) -> str:
 @pytest.fixture()
 def asynchronous_csv_source(
     csv_file: str,
-) -> MaterialsCSVFileAsyncSource:
-    return MaterialsCSVFileAsyncSource(
+) -> MaterialsCSVFileSource:
+    return MaterialsCSVFileSource(
         path=csv_file,
         material_id_column=Column(column_name="id"),
         plant_id_column=Column(column_name="plant"),
@@ -76,7 +76,7 @@ def expected_materials() -> list[material_pb2.Material]:
 
 @pytest.mark.asyncio()
 async def test_load_file(
-    asynchronous_csv_source: MaterialsCSVFileAsyncSource,
+    asynchronous_csv_source: MaterialsCSVFileSource,
     expected_materials: list[material_pb2.Material],
 ) -> None:
     actual_materials = [_ async for _ in asynchronous_csv_source]
