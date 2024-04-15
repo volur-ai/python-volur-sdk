@@ -85,7 +85,7 @@ class MaterialsCSVFileSource(MaterialsSource):
             ],
         )
         ```
-    """
+    """  # noqa: E501
 
     path: str
     material_id_column: Column
