@@ -2,11 +2,14 @@ site_name: Völur AI SDK documentation
 repo_url: https://github.com/volur-ai/data-component-cooperl
 theme:
   name: material
+  features:
+    - content.code.copy
+    - content.code.annotate
 plugins:
   - search
   - gen-files:
       scripts:
-        - scripts/gen_pages.py
+        - scripts/gen_pages.py # https://mkdocstrings.github.io/recipes/#automatic-code-reference-pages
   - literate-nav:
       nav_file: SUMMARY.md
   - section-index
@@ -17,7 +20,23 @@ plugins:
           paths:
             - src
             - gen
+          import:
+            - https://googleapis.dev/python/google-api-core/latest/objects.inv
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
 
 nav:
   - Code Reference: reference/
   - 'index.md'
+
+watch:
+  - src/
+  - gen/
+  - scripts/
