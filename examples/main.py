@@ -5,7 +5,7 @@ from volur.sdk.client import VolurClient
 from volur.sdk.sources.csv import (
     CharacteristicColumn,
     Column,
-    MaterialsCSVFileAsyncSource,
+    MaterialsCSVFileSource,
     QuantityColumn,
 )
 
@@ -16,7 +16,7 @@ def main() -> None:
     client = VolurClient()
     logger.info("start uploading data to Snowflake")
     client.upload_materials_information(
-        MaterialsCSVFileAsyncSource(
+        MaterialsCSVFileSource(
             path="data.csv",
             material_id_column=Column(column_name="MATERIAL_ID"),
             quantity_column=QuantityColumn(
