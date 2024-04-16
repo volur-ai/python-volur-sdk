@@ -28,4 +28,7 @@ class VolurApiSettings(BaseSettings):
     )
     address: str
     token: SecretStr
-    debug: bool = Field(False, description="Enable debug mode")
+    debug: bool = Field(
+        False,
+        description="Enable debug mode",
+    )
