@@ -42,7 +42,7 @@ def asynchronous_csv_source(
                 column_name="plant_code",
                 characteristic_name="plant_code",
                 data_type="integer",
-            )
+            ),
         ],
     )
 
@@ -60,7 +60,7 @@ def expected_product() -> list[product_pb2.Product]:
                 Characteristic(
                     name="plant_code",
                     value=CharacteristicValue(value_integer=1001),
-                )
+                ),
             ],
         ),
         product_pb2.Product(
@@ -73,7 +73,7 @@ def expected_product() -> list[product_pb2.Product]:
                 Characteristic(
                     name="plant_code",
                     value=CharacteristicValue(value_integer=1002),
-                )
+                ),
             ],
         ),
     ]
