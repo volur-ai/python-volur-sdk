@@ -7,11 +7,12 @@ from typing import AsyncIterator
 
 from loguru import logger
 from volur.pork.materials.v1alpha3 import material_pb2
+from volur.pork.products.v1alpha2 import product_pb2
 from volur.pork.shared.v1alpha1.characteristic_pb2 import (
     Characteristic,
 )
 from volur.pork.shared.v1alpha1.quantity_pb2 import Quantity
-from volur.sdk.sources.csv.base import MaterialsSource
+from volur.sdk.sources.csv.base import MaterialsSource, ProductSource
 from volur.sdk.sources.csv.shared import (
     CharacteristicColumn,
     Column,
@@ -27,7 +28,7 @@ from volur.sdk.sources.csv.shared import (
 class MaterialsCSVFileSource(MaterialsSource):
     """A CSV source for Materials.
 
-    This class simplfies the upload of Materials Information using CSV.
+    This class simplifies the upload of Materials Information using CSV.
 
     Arguments:
         path: A path to the CSV file containing materials information.
@@ -172,4 +173,122 @@ class MaterialsCSVFileSource(MaterialsSource):
                     ]
                 )
             yield material
+        logger.info("finished reading data from a CSV file")
+
+
+@dataclass
+class ProductCSVFileSource(ProductSource):
+    """A CSV source for Product.
+
+    This class simplifies the upload of Product Information using CSV.
+
+    Arguments:
+        path: A path to the CSV file containing product information.
+        product_id_column: A column that is used to uniquely identify a product in a dataset
+        delimiter: A delimiter used in CSV file
+        characteristics_columns: Specifies a list of arbitrary characteristics of a given product
+
+    Examples:
+        ### Minimal working example
+        This is a **minimal** required configuration of a CSV source for
+        products.
+
+        ```python title="simple.py" linenums="1"
+        source = ProductCSVFileSource(
+            "products.csv",
+            product_id_column=Column(
+                "source_id",
+            ),
+        )
+        ```
+        ### Extended example with multiple characteristics
+        When your CSV source has a more complex configuration, you can utilise
+        this class to upload information using characteristic and predefined
+        columns.
+
+        ```python title="example.py" linenums="1"
+        source = ProductCSVFileSource(
+            "products.csv",
+            product_id_column=Column(
+                "product_id",
+            ),
+            characteristics_columns=[
+                CharacteristicColumn(
+                    "description",
+                    "string",
+                    characteristic_name="description",
+                ),
+                CharacteristicColumn(
+                    "plant_number",
+                    "integer",
+                    characteristic_name="plant_number",
+                ),
+            ],
+        )
+        ```
+    """  # noqa: E501
+
+    path: str
+    product_id_column: Column
+    _data: AsyncIterator[product_pb2.Product] | None = field(
+        default=None,
+        init=False,
+        repr=False,
+    )
+    delimiter: str = field(
+        default=",",
+    )
+    characteristics_columns: list[CharacteristicColumn] = field(default_factory=list)
+
+    def __aiter__(
+        self: "ProductCSVFileSource",
+    ) -> AsyncIterator[material_pb2.Material]:
+        self._data = self._load()
+        return self
+
+    async def __anext__(
+        self: "ProductCSVFileSource",
+    ) -> product_pb2.Product:
+        if self._data is None:
+            self._data = self._load()
+        data = await anext(self._data)
+        if data is None:
+            raise StopAsyncIteration()
+        return data
+
+    async def _load(
+        self: "ProductCSVFileSource",
+    ) -> AsyncIterator[product_pb2.Product]:
+        logger.info("reading data from a CSV file")
+        reader = await read(
+            self.path,
+            [
+                self.product_id_column,
+                *self.characteristics_columns,
+            ],
+            self.delimiter,
+        )
+        for _, row in enumerate(reader):
+            product = product_pb2.Product()
+            if (
+                value := fetch_value(
+                    row,
+                    self.product_id_column,
+                ).value_string
+            ) is not None:
+                product.product_id = value
+            if self.characteristics_columns:
+                product.characteristics.extend(
+                    [
+                        Characteristic(
+                            name=column.characteristic_name,
+                            value=load_characteristic_value(
+                                row.get(column.column_name),
+                                column,
+                            ),
+                        )
+                        for column in self.characteristics_columns
+                    ]
+                )
+            yield product
         logger.info("finished reading data from a CSV file")
