@@ -17,6 +17,7 @@ pydantic = "^2.7"
 pydantic-settings = "^2.2"
 aiofiles = "^23.2"
 loguru = "^0.7"
+azure-functions = "^1.19.0"
 
 [tool.poetry.group.dev.dependencies]
 mypy = ">=1"

@@ -1,5 +1,7 @@
 """A package that contains actual implementation of various CSV sources"""
 
+import io
+import pathlib
 from dataclasses import dataclass, field
 from typing import AsyncIterator
 
@@ -87,7 +89,7 @@ class MaterialsCSVFileSource(MaterialsSource):
         ```
     """  # noqa: E501
 
-    path: str
+    path: str | pathlib.Path | io.BufferedIOBase
     material_id_column: Column
     _data: AsyncIterator[material_pb2.Material] | None = field(
         default=None,
