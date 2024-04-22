@@ -1,8 +1,9 @@
 """Various classes and methods used accross sources code"""
 
 import csv
-from pathlib import Path
-from typing import Iterator, Literal
+import io
+import pathlib
+from typing import Iterable, Iterator, Literal
 
 import aiofiles
 from pydantic import BaseModel, Field
@@ -124,29 +125,36 @@ def fetch_value(row: dict[str, str], column: Column) -> Value:
         raise ValueError(f"unknown data type {column.data_type}")
 
 
+def buffered_io_base_to_str_iterable(source: io.BufferedIOBase) -> Iterable[str]:
+    while data := source.readline():
+        yield data.strip().decode(encoding="utf-8")
+
+
 async def read(
-    path: str,
+    path: str | pathlib.Path | io.BufferedIOBase,
     columns: list[Column | None],
-    delimeter: str,
+    delimiter: str,
 ) -> Iterator[dict[str, str]]:
-    _ = Path(path)
-    if not _.exists():
-        raise ValueError("file does not exist")
-    if not _.is_file():
-        raise ValueError("path is not a file")
-    async with aiofiles.open(_, mode="r") as source:
-        content = await source.read()
+    if isinstance(path, io.BufferedIOBase):
         reader = csv.DictReader(
-            content.splitlines(),
-            delimiter=delimeter,
+            buffered_io_base_to_str_iterable(path),
+            delimiter=delimiter,
         )
-        required_columns = set([_.column_name for _ in columns if _ is not None])
-        columns_present_in_file = set(reader.fieldnames)  # type: ignore[arg-type]
-        missing_columns = required_columns.difference(
-            columns_present_in_file,
-        )
-        if missing_columns:
-            raise ValueError(
-                f"missing columns in " f"the csv file: {','.join(missing_columns)}"
+    elif isinstance(path, (str, pathlib.Path)):
+        _ = pathlib.Path(path)
+        async with aiofiles.open(_, mode="r") as source:
+            content = await source.read()
+            reader = csv.DictReader(
+                content.splitlines(),
+                delimiter=delimiter,
             )
-        return reader
+    required_columns = set([_.column_name for _ in columns if _ is not None])
+    columns_present_in_file = set(reader.fieldnames)  # type: ignore[arg-type]
+    missing_columns = required_columns.difference(
+        columns_present_in_file,
+    )
+    if missing_columns:
+        raise ValueError(
+            f"missing columns in " f"the csv file: {','.join(missing_columns)}"
+        )
+    return reader

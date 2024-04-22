@@ -1,7 +1,9 @@
+import io
+
 import pytest
 from pydantic_core._pydantic_core import ValidationError
 from volur.pork.shared.v1alpha1 import quantity_pb2
-from volur.sdk.sources.csv import CharacteristicColumn, QuantityColumn
+from volur.sdk.sources.csv import CharacteristicColumn, QuantityColumn, shared
 from volur.sdk.sources.csv.shared import Column, Value, fetch_value, load_quantity
 
 
@@ -365,3 +367,34 @@ def test_fetch_value(
             column=column,
         )
         assert actual == expected
+
+
+@pytest.fixture()
+def source() -> io.BytesIO:
+    source = io.BytesIO()
+    source.writelines(
+        [
+            b"fake-string-a\n",
+            b"fake-string-b\n",
+            b"fake-string-c\n",
+        ]
+    )
+    source.seek(0)
+    return source
+
+
+@pytest.fixture()
+def expected_strings() -> list[str]:
+    return [
+        "fake-string-a",
+        "fake-string-b",
+        "fake-string-c",
+    ]
+
+
+def test_buffered_io_base_to_str_iterable(
+    source: io.BytesIO,
+    expected_strings: list[str],
+) -> None:
+    actual = shared.buffered_io_base_to_str_iterable(source)
+    assert list(actual) == expected_strings
