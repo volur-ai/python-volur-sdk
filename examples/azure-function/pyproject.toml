@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "volur-ai-sdk-deploy-as-azure-function-example"
+version = "0.0.0"
+description = ""
+authors = []
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.12"
+azure-functions = "^1.19.0"
+volur-ai-sdk = {git = "https://github.com/volur-ai/python-volur-ai-sdk.git", rev = "main"}
+googleapis-common-protos = "^1.63.0"
+
+[tool.poetry.group.dev.dependencies]
+mypy = ">=1"
+ruff = ">=0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
