@@ -3,8 +3,8 @@ import io
 import pytest
 from pydantic_core._pydantic_core import ValidationError
 from volur.pork.shared.v1alpha1 import quantity_pb2
-from volur.sdk.sources.csv import CharacteristicColumn, QuantityColumn, shared
-from volur.sdk.sources.csv.shared import Column, Value, fetch_value, load_quantity
+from volur.sdk import CharacteristicColumn, Column, QuantityColumn, Value
+from volur.sdk.v1alpha1.sources.csv import shared
 
 
 @pytest.mark.parametrize(
@@ -263,12 +263,12 @@ def test_load_quantity(
 ) -> None:
     if exception:
         with pytest.raises(ValueError, match=exception_message):
-            load_quantity(
+            shared.load_quantity(
                 value=value,
                 column=column,
             )
     else:
-        actual = load_quantity(
+        actual = shared.load_quantity(
             value=value,
             column=column,
         )
@@ -357,12 +357,12 @@ def test_fetch_value(
 ) -> None:
     if exception:
         with pytest.raises(ValueError, match=exception_message):
-            fetch_value(
+            shared.fetch_value(
                 row=row,
                 column=column,
             )
     else:
-        actual = fetch_value(
+        actual = shared.fetch_value(
             row=row,
             column=column,
         )

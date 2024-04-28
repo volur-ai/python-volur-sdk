@@ -8,7 +8,7 @@ from volur.pork.shared.v1alpha1.characteristic_pb2 import (
     CharacteristicValue,
 )
 from volur.pork.shared.v1alpha1.quantity_pb2 import Quantity, QuantityValue
-from volur.sdk.sources.csv import (
+from volur.sdk import (
     CharacteristicColumn,
     Column,
     MaterialsCSVFileSource,

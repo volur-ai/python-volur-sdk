@@ -4,14 +4,8 @@ from typing import AsyncIterator
 import grpc
 from google.rpc.status_pb2 import Status
 from loguru import logger
-from volur.api.settings import VolurApiSettings
-from volur.pork.materials.v1alpha3.material_pb2 import (
-    UploadMaterialInformationRequest,
-)
-from volur.pork.materials.v1alpha3.material_pb2_grpc import (
-    MaterialInformationServiceStub,
-)
-from volur.sdk.sources.csv.base import MaterialsSource
+from volur.api.v1alpha1.settings import VolurApiSettings
+from volur.pork.materials.v1alpha3 import material_pb2, material_pb2_grpc
 
 
 @dataclass
@@ -30,7 +24,7 @@ class VolurApiAsyncClient:
 
     async def upload_materials_information(
         self: "VolurApiAsyncClient",
-        materials: MaterialsSource,
+        materials: AsyncIterator[material_pb2.Material],
     ) -> Status:
         """Uploads Materials Information to the Völur platform using the Völur
         API.
@@ -48,11 +42,13 @@ class VolurApiAsyncClient:
         """
 
         async def generate_requests() -> (
-            AsyncIterator[UploadMaterialInformationRequest]
+            AsyncIterator[material_pb2.UploadMaterialInformationRequest]
         ):
             try:
                 async for material in materials:
-                    yield UploadMaterialInformationRequest(material=material)
+                    yield material_pb2.UploadMaterialInformationRequest(
+                        material=material,
+                    )
             except Exception:
                 logger.exception(
                     "error occurred while generating requests",
@@ -64,7 +60,7 @@ class VolurApiAsyncClient:
                 self.settings.address,
                 grpc.ssl_channel_credentials(),
             )
-            stub = MaterialInformationServiceStub(channel)
+            stub = material_pb2_grpc.MaterialInformationServiceStub(channel)
             requests = generate_requests()
             stream = stub.UploadMaterialInformation(
                 requests,  # type: ignore[arg-type]
