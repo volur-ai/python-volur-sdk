@@ -1,13 +1,11 @@
-"""A package where all SDK-related code lives"""
-
-from volur.sdk.v1alpha1 import (
+from volur.sdk.v1alpha1.client import VolurClient
+from volur.sdk.v1alpha1.sources import (
     CharacteristicColumn,
     Column,
     MaterialsCSVFileSource,
     MaterialsSource,
     QuantityColumn,
     Value,
-    VolurClient,
 )
 
 __all__ = [

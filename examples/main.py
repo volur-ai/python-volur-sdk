@@ -1,12 +1,12 @@
 import sys
 
 from loguru import logger
-from volur.sdk.client import VolurClient
-from volur.sdk.sources.csv import (
+from volur.sdk import (
     CharacteristicColumn,
     Column,
     MaterialsCSVFileSource,
     QuantityColumn,
+    VolurClient,
 )
 
 logger.configure(handlers=[{"sink": sys.stderr, "level": "INFO"}])

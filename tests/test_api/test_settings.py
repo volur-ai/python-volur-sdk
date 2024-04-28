@@ -1,5 +1,5 @@
 import pytest
-from volur.api.settings import VolurApiSettings
+from volur.api import VolurApiSettings
 
 
 @pytest.fixture()
