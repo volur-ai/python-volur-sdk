@@ -11,8 +11,8 @@ from volur.pork.shared.v1alpha1.characteristic_pb2 import (
     Characteristic,
 )
 from volur.pork.shared.v1alpha1.quantity_pb2 import Quantity
-from volur.sdk.sources.csv.base import MaterialsSource
-from volur.sdk.sources.csv.shared import (
+from volur.sdk.v1alpha1.sources.csv.base import MaterialsSource
+from volur.sdk.v1alpha1.sources.csv.shared import (
     CharacteristicColumn,
     Column,
     QuantityColumn,
