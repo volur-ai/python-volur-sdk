@@ -18,6 +18,7 @@ pydantic-settings = "^2.2"
 aiofiles = "^23.2"
 loguru = "^0.7"
 azure-functions = "^1.19.0"
+anyio = "^4.3.0"
 
 [tool.poetry.group.dev.dependencies]
 mypy = ">=1"
@@ -31,6 +32,8 @@ pytest-asyncio = ">=0"
 types-aiofiles = ">=23"
 jupyter = ">=1"
 faker = ">=24"
+pyright = ">=1"
+memray = ">=1"
 
 [tool.poetry.group.docs.dependencies]
 mkdocstrings-python = "^1"
@@ -72,6 +75,18 @@ exclude = [
     ".venv",
     "__pypackages__",
 ]
+
+[tool.pyright]
+include = [
+    "gen",
+    "src",
+]
+strict = [
+    "gen",
+    "src",
+]
+venv = ".venv"
+venvPath = "."
 
 [build-system]
 requires = ["poetry-core"]
