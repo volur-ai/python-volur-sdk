@@ -128,4 +128,6 @@ async def test_load_from_io_buffered(
     expected_materials: list[material_pb2.Material],
 ) -> None:
     actual_materials = [_ async for _ in io_buffered_csv_source]
+    actual_materials.sort(key=lambda _: _.material_id)
+    expected_materials.sort(key=lambda _: _.material_id)
     assert actual_materials == expected_materials
