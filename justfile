@@ -7,6 +7,9 @@ clean:
     find {{ justfile_directory() }} -type d -name '.venv' -exec rm -rf {} +
     find {{ justfile_directory() }} -type d -name '.pytest_cache' -exec rm -rf {} +
     find {{ justfile_directory() }} -type d -name '__pycache__' -exec rm -rf {} +
+    find {{ justfile_directory() }} -type f -name '*.bin' -exec rm -rf {} +
+    find {{ justfile_directory() }} -type f -name '*.html' -exec rm -rf {} +
+    find {{ justfile_directory() }} -type f -name '*.csv' -exec rm -rf {} +
 
 # install all required dependencies
 configure:
