@@ -97,7 +97,6 @@ test:
 build-docs:
     FROM +configure
     RUN poetry run mkdocs build
-    SAVE ARTIFACT /srv/workspace/docs AS LOCAL docs
     SAVE ARTIFACT /srv/workspace/site AS LOCAL site
 
 # ci runs the CI pipeline (linting, static type checking, unit tests, documentation generation) locally
