@@ -3,34 +3,29 @@ on:
   push:
     branches:
       - main
-
 concurrency:
-  group: "docs-${{ github.repository }}"
-  cancel-in-progress: false
-
+  group: ${{ github.workflow }}-docs-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   main:
     runs-on: ubuntu-latest
-    # I kept this workflow, but it is breaking OpenTofu and Spacelift
-    # Deployment of GitHub pages leads to a 403 error that GitHub provider receives
-    # See issue https://github.com/integrations/terraform-provider-github/issues/1594
-    if: false
     permissions:
       contents: read
-      pages: write
       id-token: write
     steps:
       - uses: actions/checkout@v4
       - uses: earthly/actions-setup@v1
         with:
           version: ">=0.8 <1.0"
-      - run: |
-          earthly --strict +build-docs
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+      - uses: azure/login@v2
         with:
-          path: site
-      - uses: actions/deploy-pages@v4
-        id: deploy-pages
+          client-id: 72305ec0-00fa-4764-8d6e-db889cf0dfeb
+          tenant-id: db8e8782-f851-479a-8db9-5b97c9edcdb4
+          subscription-id: 9388d108-4782-45ba-b99e-ced5570f1d3a
+      - uses: actions/setup-go@v5
       - run: |
-          echo "Documentation published at ${{ steps.deploy-pages.outputs.page_url }}
+          earthly +build-docs
+          go install github.com/rclone/rclone@latest
+          rclone sync site :azureblob,env_auth:\$web
+        env:
+          AZURE_STORAGE_ACCOUNT_NAME: voluraisdkpythondocs

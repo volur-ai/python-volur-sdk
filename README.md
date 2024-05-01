@@ -177,3 +177,7 @@ just serve-docs
 ```
 
 And then open your browser using the provided link in the output.
+
+#### Accessing documentation
+
+Documentation is available at [docs.volur.ai](https://docs.volur.ai).
