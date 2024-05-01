@@ -58,5 +58,11 @@ build-docs:
 serve-docs:
     poetry run mkdocs serve
 
+docs_container := ""
+
+# deploy documentation using static website hosting in Azure Storage
+deploy-docs: build-docs
+    rclone sync site :azureblob,env_auth,account={{ docs-container }}:\$web
+
 # run CI locally
 ci: validate test build-docs
