@@ -10,7 +10,7 @@ packages = [
 
 [tool.poetry.dependencies]
 python = ">=3.11,<3.12"
-grpcio = "^1.62"
+grpcio = "^1.63"
 grpcio-tools = "^1.62"
 protobuf = "^4.25"
 pydantic = "^2.7"
