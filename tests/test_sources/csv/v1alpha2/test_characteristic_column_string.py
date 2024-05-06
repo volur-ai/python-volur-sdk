@@ -6,7 +6,6 @@ from volur.sdk.v1alpha2.sources.csv.base import CharacteristicColumnString
 
 ids = [
     "return-correct-characteristic-for-a-correct-string-value-in-column",
-    "raise-exception-column-does-not-exist",
     "return-empty-chracteristic-because-value-in-column-is-none",
 ]
 
@@ -27,18 +26,6 @@ test_data = [
         ),
         False,
         None,
-    ),
-    (
-        {
-            "column_name": "1234",
-        },
-        CharacteristicColumnString(
-            column_name="column_name_does_not_exist",
-            characteristic_name="characteristic_name",
-        ),
-        None,
-        True,
-        "can not fetch the string characteristic column with name column_name_does_not_exist",  # noqa: E501
     ),
     (
         {
@@ -70,7 +57,7 @@ test_data = [
     ids=ids,
 )
 def test_characteristic_column_string(
-    data: dict[str, Any],
+    data: dict[str | int, Any],
     column: CharacteristicColumnString,
     expected: characteristic_pb2.CharacteristicValue | None,
     should_raise_an_exception: bool,

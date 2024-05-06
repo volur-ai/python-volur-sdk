@@ -1,34 +1,97 @@
-"""A package that contains interfaces for sources."""
+"""A package that contains base classes for CSV sources."""
 
 import abc
-from dataclasses import dataclass, field
+from dataclasses import InitVar, dataclass, field
 from typing import Any, Literal
 
-from volur.pork.shared.v1alpha1 import characteristic_pb2
+from volur.pork.shared.v1alpha1 import characteristic_pb2, quantity_pb2
 
 
 @dataclass
 class Column:
-    column_name: str
+    column_name: InitVar[str | int]
+    column_id: str | int = field(init=False)
+
+    def __post_init__(self: "Column", column_name: str | int) -> None:
+        if isinstance(column_name, str):
+            if not column_name:
+                raise ValueError("column name can not be empty string")
+        if isinstance(column_name, int):
+            if column_name < 0:
+                raise ValueError("column index must be equal or more than 0")
+        self.column_id = column_name
 
 
 @dataclass
 class QuantityColumn(Column):
-    unit: Literal[
-        "kilogram",
-        "pound",
-        "box",
-        "piece",
+    unit: InitVar[
+        Literal[
+            "kilogram",
+            "pound",
+            "box",
+            "piece",
+        ]
     ]
+    unit_id: str = field(init=False)
+
+    def __post_init__(
+        self: "QuantityColumn",
+        column_name: str | int,
+        unit: str,
+    ) -> None:
+        super().__post_init__(column_name)
+        if unit == "":
+            raise ValueError("unit can not be empty string")
+        self.unit_id = unit
+
+    def get_value(
+        self: "QuantityColumn",
+        data: dict[str | int, Any],
+    ) -> quantity_pb2.Quantity:
+        _ = data.get(self.column_id, None)
+        value = quantity_pb2.QuantityValue()
+        if _ is None:
+            return quantity_pb2.Quantity(value=value)
+        if _ == "":
+            return quantity_pb2.Quantity(value=value)
+        try:
+            match self.unit_id:
+                case "kilogram":
+                    value.kilogram = float(_)
+                case "pound":
+                    value.pound = float(_)
+                case "box":
+                    value.box = int(_)
+                case "piece":
+                    value.piece = int(_)
+                case _:
+                    pass
+        except ValueError as error:
+            raise ValueError(
+                f"provided value {_} in column {self.column_id} can not be interpreted as {self.unit_id}"  # noqa: E501
+            ) from error
+        return quantity_pb2.Quantity(value=value)
 
 
 @dataclass
 class CharacteristicColumn(Column):
-    characteristic_name: str
+    characteristic_name: InitVar[str]
+    characteristic_id: str = field(init=False)
+
+    def __post_init__(
+        self: "CharacteristicColumn",
+        column_name: str | int,
+        characteristic_name: str,
+    ) -> None:
+        super().__post_init__(column_name)
+        if characteristic_name == "":
+            raise ValueError("characteristic name can not be empty")
+        self.characteristic_id = characteristic_name
 
     @abc.abstractmethod
     def get_value(
-        self: "CharacteristicColumn", data: dict[str, Any]
+        self: "CharacteristicColumn",
+        data: dict[str | int, Any],
     ) -> characteristic_pb2.Characteristic: ...
 
 
@@ -36,86 +99,94 @@ class CharacteristicColumn(Column):
 class CharacteristicColumnFloat(CharacteristicColumn):
     def get_value(
         self: "CharacteristicColumn",
-        data: dict[str, str | None],
+        data: dict[str | int, Any],
     ) -> characteristic_pb2.Characteristic:
-        _ = data.get(self.column_name, None)
+        _ = data.get(self.column_id, None)
         if _ is None:
-            raise ValueError(
-                f"can not fetch the float characteristic column with name {self.column_name}"  # noqa: E501
+            return characteristic_pb2.Characteristic(
+                name=self.characteristic_id,
+                value=characteristic_pb2.CharacteristicValue(),
             )
         if _ == "":
             return characteristic_pb2.Characteristic(
-                name=self.characteristic_name,
+                name=self.characteristic_id,
                 value=characteristic_pb2.CharacteristicValue(),
             )
         else:
             try:
                 value = float(_)
                 return characteristic_pb2.Characteristic(
-                    name=self.characteristic_name,
+                    name=self.characteristic_id,
                     value=characteristic_pb2.CharacteristicValue(
                         value_float=value,
                     ),
                 )
             except ValueError as error:
                 raise ValueError(
-                    f"can not parse value {_} in column {self.column_name} as float value"  # noqa: E501
+                    f"provided value {_} in column {self.column_id} can not be interpreted as float characteristic"  # noqa: E501
                 ) from error
 
 
 class CharacteristicColumnInteger(CharacteristicColumn):
     def get_value(
-        self: "CharacteristicColumnInteger", data: dict[str, str | None]
+        self: "CharacteristicColumnInteger",
+        data: dict[str | int, Any],
     ) -> characteristic_pb2.Characteristic:
-        _ = data.get(self.column_name, None)
+        _ = data.get(self.column_id, None)
         if _ is None:
-            raise ValueError(
-                f"can not fetch the integer characteristic column with name {self.column_name}"  # noqa: E501
+            return characteristic_pb2.Characteristic(
+                name=self.characteristic_id,
+                value=characteristic_pb2.CharacteristicValue(),
             )
         if _ == "":
             return characteristic_pb2.Characteristic(
-                name=self.characteristic_name,
+                name=self.characteristic_id,
                 value=characteristic_pb2.CharacteristicValue(),
             )
         else:
             try:
                 value = int(_)
                 return characteristic_pb2.Characteristic(
-                    name=self.characteristic_name,
+                    name=self.characteristic_id,
                     value=characteristic_pb2.CharacteristicValue(
                         value_integer=value,
                     ),
                 )
             except ValueError as error:
                 raise ValueError(
-                    f"can not parse value {_} in column {self.column_name} as integer value"  # noqa: E501
-                    ""
+                    f"provided value {_} in column {self.column_id} can not be interpreted as integer characteristic"  # noqa: E501
                 ) from error
 
 
 class CharacteristicColumnString(CharacteristicColumn):
     def get_value(
         self: "CharacteristicColumnString",
-        data: dict[str, str | None],
+        data: dict[str | int, Any],
     ) -> characteristic_pb2.Characteristic:
-        _ = data.get(self.column_name, None)
+        _ = data.get(self.column_id, None)
         if _ is None:
-            raise ValueError(
-                f"can not fetch the string characteristic column with name {self.column_name}"  # noqa: E501
+            return characteristic_pb2.Characteristic(
+                name=self.characteristic_id,
+                value=characteristic_pb2.CharacteristicValue(),
             )
         if _ == "":
             return characteristic_pb2.Characteristic(
-                name=self.characteristic_name,
+                name=self.characteristic_id,
                 value=characteristic_pb2.CharacteristicValue(),
             )
         else:
-            value = str(_)
-            return characteristic_pb2.Characteristic(
-                name=self.characteristic_name,
-                value=characteristic_pb2.CharacteristicValue(
-                    value_string=value,
-                ),
-            )
+            try:
+                value = str(_)
+                return characteristic_pb2.Characteristic(
+                    name=self.characteristic_id,
+                    value=characteristic_pb2.CharacteristicValue(
+                        value_string=value,
+                    ),
+                )
+            except ValueError as e:
+                raise ValueError(
+                    f"provided value {_} in column {self.column_id} can not be interpreted as string characteristic"  # noqa: E501
+                ) from e
 
 
 @dataclass
@@ -129,7 +200,12 @@ class CharacteristicColumnBool(CharacteristicColumn):
         default_factory=lambda: ["false"], init=False
     )
 
-    def __post_init__(self: "CharacteristicColumnBool") -> None:
+    def __post_init__(
+        self: "CharacteristicColumnBool",
+        column_name: str | int,
+        characteristic_name: str,
+    ) -> None:
+        super().__post_init__(column_name, characteristic_name)
         self.true_values = [
             *self.default_values_true,
             *[_.lower() for _ in self.extra_values_true],
@@ -141,34 +217,35 @@ class CharacteristicColumnBool(CharacteristicColumn):
 
     def get_value(
         self: "CharacteristicColumnBool",
-        data: dict[str, str | None],
+        data: dict[str | int, Any],
     ) -> characteristic_pb2.Characteristic:
-        _ = data.get(self.column_name, None)
+        _ = data.get(self.column_id, None)
         if _ is None:
-            raise ValueError(
-                f"can not fetch the bool characteristic column with name {self.column_name}"  # noqa: E501
+            return characteristic_pb2.Characteristic(
+                name=self.characteristic_id,
+                value=characteristic_pb2.CharacteristicValue(),
             )
         if _ == "":
             return characteristic_pb2.Characteristic(
-                name=self.characteristic_name,
+                name=self.characteristic_id,
                 value=characteristic_pb2.CharacteristicValue(),
             )
         else:
             if _.lower() in set(self.true_values):
                 return characteristic_pb2.Characteristic(
-                    name=self.characteristic_name,
+                    name=self.characteristic_id,
                     value=characteristic_pb2.CharacteristicValue(
                         value_bool=True,
                     ),
                 )
             elif _.lower() in set(self.false_values):
                 return characteristic_pb2.Characteristic(
-                    name=self.characteristic_name,
+                    name=self.characteristic_id,
                     value=characteristic_pb2.CharacteristicValue(
                         value_bool=False,
                     ),
                 )
             else:
                 raise ValueError(
-                    f"can not parse value {_} in column {self.column_name} as bool value"  # noqa: E501
+                    f"provided value {_} in column {self.column_id} can not be interpreted as bool characteristic"  # noqa: E501
                 )

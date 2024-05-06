@@ -252,3 +252,122 @@ async def test_load_from_io_buffered(
     actual_materials.sort(key=lambda _: _.material_id)
     expected_materials.sort(key=lambda _: _.material_id)
     assert actual_materials == expected_materials
+
+
+@pytest.fixture()
+def materials_csv_without_header_content() -> list[str]:
+    return [
+        "material-id-1,Plant1,100,1.0,1,string-value,true",
+        "material-id-2,Plant1,100,,1,string-value,true",
+        "material-id-3,Plant1,100,1.0,,string-value,true",
+        "material-id-4,Plant1,100,1.0,1,,false",
+        "material-id-5,Plant1,100,1.0,1,string-value,",
+    ]
+
+
+@pytest.fixture()
+def materials_csv_without_header_file(
+    tmpdir: Path,
+    materials_csv_without_header_content: list[str],
+) -> str:
+    # See https://stackoverflow.com/questions/40784950/pathlib-path-and-py-test-localpath
+    path = Path(tmpdir / "test.csv")
+    with open(path, "wb") as f:
+        for _ in materials_csv_without_header_content:
+            f.write(_.encode())
+            f.write("\n".encode())
+    return str(path)
+
+
+@pytest.fixture()
+def csv_source_without_header(
+    materials_csv_without_header_file: str,
+) -> MaterialsCSVFileSource:
+    return MaterialsCSVFileSource(
+        path=materials_csv_without_header_file,
+        has_header=False,
+        material_id_column=Column(column_name=0),
+        plant_id_column=Column(column_name=1),
+        quantity_column=QuantityColumn(column_name=2, unit="kilogram"),
+        characteristics_columns=[
+            CharacteristicColumnFloat(
+                column_name=3,
+                characteristic_name="float-characteristic",
+            ),
+            CharacteristicColumnInteger(
+                column_name=4,
+                characteristic_name="integer-characteristic",
+            ),
+            CharacteristicColumnString(
+                column_name=5,
+                characteristic_name="string-characteristic",
+            ),
+            CharacteristicColumnBool(
+                column_name=6,
+                characteristic_name="bool-characteristic",
+            ),
+        ],
+    )
+
+
+@pytest.mark.asyncio()
+async def test_load_file_without_headers(
+    csv_source_without_header: MaterialsCSVFileSource,
+    expected_materials: list[material_pb2.Material],
+) -> None:
+    actual_materials = [_ async for _ in csv_source_without_header]
+    assert actual_materials == expected_materials
+
+
+@pytest.fixture()
+def buffered_csv_without_header(
+    materials_csv_without_header_content: list[str],
+) -> io.BufferedIOBase:
+    bio = io.BytesIO()
+    for _ in materials_csv_without_header_content:
+        bio.write(_.encode())
+        bio.write("\n".encode())
+    bio.seek(0)
+    return bio
+
+
+@pytest.fixture()
+def io_buffered_csv_without_header_source(
+    buffered_csv_without_header: io.BufferedIOBase,
+) -> MaterialsCSVFileSource:
+    return MaterialsCSVFileSource(
+        path=buffered_csv_without_header,
+        has_header=False,
+        material_id_column=Column(column_name=0),
+        plant_id_column=Column(column_name=1),
+        quantity_column=QuantityColumn(column_name=2, unit="kilogram"),
+        characteristics_columns=[
+            CharacteristicColumnFloat(
+                column_name=3,
+                characteristic_name="float-characteristic",
+            ),
+            CharacteristicColumnInteger(
+                column_name=4,
+                characteristic_name="integer-characteristic",
+            ),
+            CharacteristicColumnString(
+                column_name=5,
+                characteristic_name="string-characteristic",
+            ),
+            CharacteristicColumnBool(
+                column_name=6,
+                characteristic_name="bool-characteristic",
+            ),
+        ],
+    )
+
+
+@pytest.mark.asyncio()
+async def test_load_from_io_buffered_without_header(
+    io_buffered_csv_without_header_source: MaterialsCSVFileSource,
+    expected_materials: list[material_pb2.Material],
+) -> None:
+    actual_materials = [_ async for _ in io_buffered_csv_without_header_source]
+    actual_materials.sort(key=lambda _: _.material_id)
+    expected_materials.sort(key=lambda _: _.material_id)
+    assert actual_materials == expected_materials
