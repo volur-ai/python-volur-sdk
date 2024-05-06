@@ -7,7 +7,7 @@ from typing import AsyncIterator
 
 from loguru import logger
 from volur.pork.materials.v1alpha3 import material_pb2
-from volur.pork.products.v1alpha2 import product_pb2
+from volur.pork.products.v1alpha3 import product_pb2
 from volur.pork.shared.v1alpha1.characteristic_pb2 import (
     Characteristic,
 )
@@ -242,7 +242,7 @@ class ProductCSVFileSource(ProductSource):
 
     def __aiter__(
         self: "ProductCSVFileSource",
-    ) -> AsyncIterator[material_pb2.Material]:
+    ) -> AsyncIterator[product_pb2.Product]:
         self._data = self._load()
         return self
 

@@ -11,10 +11,10 @@ from volur.pork.materials.v1alpha3.material_pb2 import (
 from volur.pork.materials.v1alpha3.material_pb2_grpc import (
     MaterialInformationServiceStub,
 )
-from volur.pork.products.v1alpha2.product_pb2 import (
+from volur.pork.products.v1alpha3.product_pb2 import (
     UploadProductInformationRequest,
 )
-from volur.pork.products.v1alpha2.product_pb2_grpc import (
+from volur.pork.products.v1alpha3.product_pb2_grpc import (
     ProductInformationServiceStub,
 )
 from volur.sdk.sources.csv.base import MaterialsSource, ProductSource
@@ -141,7 +141,9 @@ class VolurApiAsyncClient:
             The status of the operation.
         """
 
-        async def generate_requests() -> AsyncIterator[UploadProductInformationRequest]:
+        async def generate_requests() -> (
+            AsyncIterator[UploadProductInformationRequest] | None
+        ):
             try:
                 async for product in products:
                     yield UploadProductInformationRequest(product=product)

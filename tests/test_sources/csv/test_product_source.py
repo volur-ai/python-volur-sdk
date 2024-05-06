@@ -1,7 +1,7 @@
 from pathlib import Path
 
 import pytest
-from volur.pork.products.v1alpha2 import product_pb2
+from volur.pork.products.v1alpha3 import product_pb2
 from volur.pork.shared.v1alpha1.characteristic_pb2 import (
     Characteristic,
     CharacteristicValue,

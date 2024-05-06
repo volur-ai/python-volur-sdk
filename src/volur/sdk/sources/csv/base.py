@@ -4,7 +4,7 @@ import abc
 from typing import AsyncIterator
 
 from volur.pork.materials.v1alpha3 import material_pb2
-from volur.pork.products.v1alpha2 import product_pb2
+from volur.pork.products.v1alpha3 import product_pb2
 
 
 class MaterialsSource:
