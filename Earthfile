@@ -92,6 +92,8 @@ validate:
 test:
     FROM +configure
     RUN poetry run pytest tests
+    SAVE ARTIFACT /srv/workspace/.coverage AS LOCAL .coverage
+    SAVE ARTIFACT /srv/workspace/htmlcov AS LOCAL htmlcov
 
 # build-docs builds the documentation using mkdocs
 build-docs:

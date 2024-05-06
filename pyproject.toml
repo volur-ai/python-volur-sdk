@@ -88,6 +88,9 @@ strict = [
 venv = ".venv"
 venvPath = "."
 
+[tool.pytest.ini_options]
+addopts = "--cov=src --cov-report html"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
