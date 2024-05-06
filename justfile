@@ -38,19 +38,19 @@ generate:
     cp -r {{ apis_repository_dir }}/gen/python gen
 
 # fix auto-fixable issues
-fix:
+fix: configure
     poetry run ruff format src tests examples scripts && \
     poetry run ruff check --fix --unsafe-fixes src tests examples scripts
 
 # validate code and configuration
-validate:
+validate: configure
     poetry check --lock && \
     poetry run ruff format --check src tests examples scripts *.ipynb && \
     poetry run ruff check src tests examples scripts *.ipynb && \
     poetry run mypy src tests examples scripts
 
 # run tests
-test:
+test: configure
     poetry run pytest tests
 
 # build documentation
