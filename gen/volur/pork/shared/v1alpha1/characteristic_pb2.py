@@ -15,9 +15,10 @@ _sym_db = _symbol_database.Default()
 from google.protobuf import duration_pb2 as google_dot_protobuf_dot_duration__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 from google.type import date_pb2 as google_dot_type_dot_date__pb2
+from volur.pork.shared.v1alpha1 import price_per_unit_pb2 as volur_dot_pork_dot_shared_dot_v1alpha1_dot_price__per__unit__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n/volur/pork/shared/v1alpha1/characteristic.proto\x12\x1avolur.pork.shared.v1alpha1\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x16google/type/date.proto\"k\n\x0e\x43haracteristic\x12\x12\n\x04name\x18\x01 \x01(\tR\x04name\x12\x45\n\x05value\x18\x02 \x01(\x0b\x32/.volur.pork.shared.v1alpha1.CharacteristicValueR\x05value\"\xd6\x02\n\x13\x43haracteristicValue\x12\x1f\n\x0bvalue_float\x18\x01 \x01(\x02R\nvalueFloat\x12#\n\rvalue_integer\x18\x02 \x01(\x05R\x0cvalueInteger\x12!\n\x0cvalue_string\x18\x03 \x01(\tR\x0bvalueString\x12\x1d\n\nvalue_bool\x18\x04 \x01(\x08R\tvalueBool\x12\x43\n\x0fvalue_timestamp\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x0evalueTimestamp\x12\x30\n\nvalue_date\x18\x06 \x01(\x0b\x32\x11.google.type.DateR\tvalueDate\x12@\n\x0evalue_duration\x18\x07 \x01(\x0b\x32\x19.google.protobuf.DurationR\rvalueDurationB\x8c\x02\n\x1e\x63om.volur.pork.shared.v1alpha1B\x13\x43haracteristicProtoP\x01ZJgithub.com/volur-ai/ryder/protos/volur/pork/shared/v1alpha1;sharedv1alpha1\xa2\x02\x03VPS\xaa\x02\x1aVolur.Pork.Shared.V1alpha1\xca\x02\x1aVolur\\Pork\\Shared\\V1alpha1\xe2\x02&Volur\\Pork\\Shared\\V1alpha1\\GPBMetadata\xea\x02\x1dVolur::Pork::Shared::V1alpha1b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n/volur/pork/shared/v1alpha1/characteristic.proto\x12\x1avolur.pork.shared.v1alpha1\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x16google/type/date.proto\x1a/volur/pork/shared/v1alpha1/price_per_unit.proto\"k\n\x0e\x43haracteristic\x12\x12\n\x04name\x18\x01 \x01(\tR\x04name\x12\x45\n\x05value\x18\x02 \x01(\x0b\x32/.volur.pork.shared.v1alpha1.CharacteristicValueR\x05value\"\xb1\x03\n\x13\x43haracteristicValue\x12\x1f\n\x0bvalue_float\x18\x01 \x01(\x02R\nvalueFloat\x12#\n\rvalue_integer\x18\x02 \x01(\x05R\x0cvalueInteger\x12!\n\x0cvalue_string\x18\x03 \x01(\tR\x0bvalueString\x12\x1d\n\nvalue_bool\x18\x04 \x01(\x08R\tvalueBool\x12\x43\n\x0fvalue_timestamp\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x0evalueTimestamp\x12\x30\n\nvalue_date\x18\x06 \x01(\x0b\x32\x11.google.type.DateR\tvalueDate\x12@\n\x0evalue_duration\x18\x07 \x01(\x0b\x32\x19.google.protobuf.DurationR\rvalueDuration\x12Y\n\x14value_price_per_unit\x18\x08 \x01(\x0b\x32(.volur.pork.shared.v1alpha1.PricePerUnitR\x11valuePricePerUnitB\x8c\x02\n\x1e\x63om.volur.pork.shared.v1alpha1B\x13\x43haracteristicProtoP\x01ZJgithub.com/volur-ai/ryder/protos/volur/pork/shared/v1alpha1;sharedv1alpha1\xa2\x02\x03VPS\xaa\x02\x1aVolur.Pork.Shared.V1alpha1\xca\x02\x1aVolur\\Pork\\Shared\\V1alpha1\xe2\x02&Volur\\Pork\\Shared\\V1alpha1\\GPBMetadata\xea\x02\x1dVolur::Pork::Shared::V1alpha1b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -25,8 +26,8 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'volur.pork.shared.v1alpha1.
 if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'\n\036com.volur.pork.shared.v1alpha1B\023CharacteristicProtoP\001ZJgithub.com/volur-ai/ryder/protos/volur/pork/shared/v1alpha1;sharedv1alpha1\242\002\003VPS\252\002\032Volur.Pork.Shared.V1alpha1\312\002\032Volur\\Pork\\Shared\\V1alpha1\342\002&Volur\\Pork\\Shared\\V1alpha1\\GPBMetadata\352\002\035Volur::Pork::Shared::V1alpha1'
-  _globals['_CHARACTERISTIC']._serialized_start=168
-  _globals['_CHARACTERISTIC']._serialized_end=275
-  _globals['_CHARACTERISTICVALUE']._serialized_start=278
-  _globals['_CHARACTERISTICVALUE']._serialized_end=620
+  _globals['_CHARACTERISTIC']._serialized_start=217
+  _globals['_CHARACTERISTIC']._serialized_end=324
+  _globals['_CHARACTERISTICVALUE']._serialized_start=327
+  _globals['_CHARACTERISTICVALUE']._serialized_end=760
 # @@protoc_insertion_point(module_scope)

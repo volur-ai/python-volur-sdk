@@ -15,19 +15,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+
 import builtins
 import google.protobuf.descriptor
 import google.protobuf.message
-import sys
-
-if sys.version_info >= (3, 8):
-    import typing as typing_extensions
-else:
-    import typing_extensions
+import typing
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor
 
-@typing_extensions.final
+@typing.final
 class Date(google.protobuf.message.Message):
     """Represents a whole or partial calendar date, such as a birthday. The time of
     day and time zone are either specified elsewhere or are insignificant. The
@@ -69,6 +65,6 @@ class Date(google.protobuf.message.Message):
         month: builtins.int = ...,
         day: builtins.int = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing_extensions.Literal["day", b"day", "month", b"month", "year", b"year"]) -> None: ...
+    def ClearField(self, field_name: typing.Literal["day", b"day", "month", b"month", "year", b"year"]) -> None: ...
 
 global___Date = Date

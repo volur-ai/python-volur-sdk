@@ -18,7 +18,7 @@ class MaterialInformationServiceStub(object):
                 '/volur.pork.materials.v1alpha2.MaterialInformationService/UploadMaterialInformation',
                 request_serializer=volur_dot_pork_dot_materials_dot_v1alpha2_dot_material__pb2.UploadMaterialInformationRequest.SerializeToString,
                 response_deserializer=volur_dot_pork_dot_materials_dot_v1alpha2_dot_material__pb2.UploadMaterialInformationResponse.FromString,
-                )
+                _registered_method=True)
 
 
 class MaterialInformationServiceServicer(object):
@@ -63,8 +63,18 @@ class MaterialInformationService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.stream_stream(request_iterator, target, '/volur.pork.materials.v1alpha2.MaterialInformationService/UploadMaterialInformation',
+        return grpc.experimental.stream_stream(
+            request_iterator,
+            target,
+            '/volur.pork.materials.v1alpha2.MaterialInformationService/UploadMaterialInformation',
             volur_dot_pork_dot_materials_dot_v1alpha2_dot_material__pb2.UploadMaterialInformationRequest.SerializeToString,
             volur_dot_pork_dot_materials_dot_v1alpha2_dot_material__pb2.UploadMaterialInformationResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)

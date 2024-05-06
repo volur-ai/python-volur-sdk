@@ -15,19 +15,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+
 import builtins
 import google.protobuf.descriptor
 import google.protobuf.message
-import sys
-
-if sys.version_info >= (3, 8):
-    import typing as typing_extensions
-else:
-    import typing_extensions
+import typing
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor
 
-@typing_extensions.final
+@typing.final
 class Money(google.protobuf.message.Message):
     """Represents an amount of money with its currency type."""
 
@@ -57,6 +53,6 @@ class Money(google.protobuf.message.Message):
         units: builtins.int = ...,
         nanos: builtins.int = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing_extensions.Literal["currency_code", b"currency_code", "nanos", b"nanos", "units", b"units"]) -> None: ...
+    def ClearField(self, field_name: typing.Literal["currency_code", b"currency_code", "nanos", b"nanos", "units", b"units"]) -> None: ...
 
 global___Money = Money

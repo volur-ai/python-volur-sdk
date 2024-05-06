@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-from volur.pork.products.v1alpha2 import product_pb2 as volur_dot_pork_dot_products_dot_v1alpha2_dot_product__pb2
+from volur.pork.products.v1alpha3 import product_pb2 as volur_dot_pork_dot_products_dot_v1alpha3_dot_product__pb2
 
 
 class ProductInformationServiceStub(object):
@@ -16,9 +16,9 @@ class ProductInformationServiceStub(object):
             channel: A grpc.Channel.
         """
         self.UploadProductInformation = channel.stream_stream(
-                '/volur.pork.products.v1alpha2.ProductInformationService/UploadProductInformation',
-                request_serializer=volur_dot_pork_dot_products_dot_v1alpha2_dot_product__pb2.UploadProductInformationRequest.SerializeToString,
-                response_deserializer=volur_dot_pork_dot_products_dot_v1alpha2_dot_product__pb2.UploadProductInformationResponse.FromString,
+                '/volur.pork.products.v1alpha3.ProductInformationService/UploadProductInformation',
+                request_serializer=volur_dot_pork_dot_products_dot_v1alpha3_dot_product__pb2.UploadProductInformationRequest.SerializeToString,
+                response_deserializer=volur_dot_pork_dot_products_dot_v1alpha3_dot_product__pb2.UploadProductInformationResponse.FromString,
                 _registered_method=True)
 
 
@@ -39,12 +39,12 @@ def add_ProductInformationServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'UploadProductInformation': grpc.stream_stream_rpc_method_handler(
                     servicer.UploadProductInformation,
-                    request_deserializer=volur_dot_pork_dot_products_dot_v1alpha2_dot_product__pb2.UploadProductInformationRequest.FromString,
-                    response_serializer=volur_dot_pork_dot_products_dot_v1alpha2_dot_product__pb2.UploadProductInformationResponse.SerializeToString,
+                    request_deserializer=volur_dot_pork_dot_products_dot_v1alpha3_dot_product__pb2.UploadProductInformationRequest.FromString,
+                    response_serializer=volur_dot_pork_dot_products_dot_v1alpha3_dot_product__pb2.UploadProductInformationResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'volur.pork.products.v1alpha2.ProductInformationService', rpc_method_handlers)
+            'volur.pork.products.v1alpha3.ProductInformationService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
@@ -67,9 +67,9 @@ class ProductInformationService(object):
         return grpc.experimental.stream_stream(
             request_iterator,
             target,
-            '/volur.pork.products.v1alpha2.ProductInformationService/UploadProductInformation',
-            volur_dot_pork_dot_products_dot_v1alpha2_dot_product__pb2.UploadProductInformationRequest.SerializeToString,
-            volur_dot_pork_dot_products_dot_v1alpha2_dot_product__pb2.UploadProductInformationResponse.FromString,
+            '/volur.pork.products.v1alpha3.ProductInformationService/UploadProductInformation',
+            volur_dot_pork_dot_products_dot_v1alpha3_dot_product__pb2.UploadProductInformationRequest.SerializeToString,
+            volur_dot_pork_dot_products_dot_v1alpha3_dot_product__pb2.UploadProductInformationResponse.FromString,
             options,
             channel_credentials,
             insecure,

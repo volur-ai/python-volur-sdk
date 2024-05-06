@@ -8,7 +8,7 @@ import collections.abc
 import grpc
 import grpc.aio
 import typing
-import volur.pork.products.v1alpha2.product_pb2
+import volur.pork.products.v1alpha3.product_pb2
 
 _T = typing.TypeVar("_T")
 
@@ -22,8 +22,8 @@ class ProductInformationServiceStub:
 
     def __init__(self, channel: typing.Union[grpc.Channel, grpc.aio.Channel]) -> None: ...
     UploadProductInformation: grpc.StreamStreamMultiCallable[
-        volur.pork.products.v1alpha2.product_pb2.UploadProductInformationRequest,
-        volur.pork.products.v1alpha2.product_pb2.UploadProductInformationResponse,
+        volur.pork.products.v1alpha3.product_pb2.UploadProductInformationRequest,
+        volur.pork.products.v1alpha3.product_pb2.UploadProductInformationResponse,
     ]
     """RPC method for uploading product information.
     It takes a stream of UploadProductInformationRequest and returns a stream of UploadProductInformationResponse.
@@ -33,8 +33,8 @@ class ProductInformationServiceAsyncStub:
     """Service definition for uploading product information."""
 
     UploadProductInformation: grpc.aio.StreamStreamMultiCallable[
-        volur.pork.products.v1alpha2.product_pb2.UploadProductInformationRequest,
-        volur.pork.products.v1alpha2.product_pb2.UploadProductInformationResponse,
+        volur.pork.products.v1alpha3.product_pb2.UploadProductInformationRequest,
+        volur.pork.products.v1alpha3.product_pb2.UploadProductInformationResponse,
     ]
     """RPC method for uploading product information.
     It takes a stream of UploadProductInformationRequest and returns a stream of UploadProductInformationResponse.
@@ -46,9 +46,9 @@ class ProductInformationServiceServicer(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def UploadProductInformation(
         self,
-        request_iterator: _MaybeAsyncIterator[volur.pork.products.v1alpha2.product_pb2.UploadProductInformationRequest],
+        request_iterator: _MaybeAsyncIterator[volur.pork.products.v1alpha3.product_pb2.UploadProductInformationRequest],
         context: _ServicerContext,
-    ) -> typing.Union[collections.abc.Iterator[volur.pork.products.v1alpha2.product_pb2.UploadProductInformationResponse], collections.abc.AsyncIterator[volur.pork.products.v1alpha2.product_pb2.UploadProductInformationResponse]]:
+    ) -> typing.Union[collections.abc.Iterator[volur.pork.products.v1alpha3.product_pb2.UploadProductInformationResponse], collections.abc.AsyncIterator[volur.pork.products.v1alpha3.product_pb2.UploadProductInformationResponse]]:
         """RPC method for uploading product information.
         It takes a stream of UploadProductInformationRequest and returns a stream of UploadProductInformationResponse.
         """

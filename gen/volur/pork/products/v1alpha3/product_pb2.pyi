@@ -10,7 +10,7 @@ import google.protobuf.internal.containers
 import google.protobuf.message
 import google.rpc.status_pb2
 import typing
-import volur.pork.products.v1alpha1.characteristic_pb2
+import volur.pork.shared.v1alpha1.characteristic_pb2
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor
 
@@ -27,14 +27,14 @@ class Product(google.protobuf.message.Message):
     product_id: builtins.str
     """Unique identifier for the product."""
     @property
-    def characteristics(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[volur.pork.products.v1alpha1.characteristic_pb2.Characteristic]:
+    def characteristics(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[volur.pork.shared.v1alpha1.characteristic_pb2.Characteristic]:
         """List of characteristics that describe the product."""
 
     def __init__(
         self,
         *,
         product_id: builtins.str = ...,
-        characteristics: collections.abc.Iterable[volur.pork.products.v1alpha1.characteristic_pb2.Characteristic] | None = ...,
+        characteristics: collections.abc.Iterable[volur.pork.shared.v1alpha1.characteristic_pb2.Characteristic] | None = ...,
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["characteristics", b"characteristics", "product_id", b"product_id"]) -> None: ...
 
@@ -43,23 +43,23 @@ global___Product = Product
 @typing.final
 class UploadProductInformationRequest(google.protobuf.message.Message):
     """Message representing a request to upload product information.
-    It contains the inventory of products to be uploaded.
+    It contains the products to be uploaded.
     """
 
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
-    SUPPLY_INVENTORY_FIELD_NUMBER: builtins.int
+    PRODUCT_FIELD_NUMBER: builtins.int
     @property
-    def supply_inventory(self) -> global___Product:
-        """The product inventory to be uploaded."""
+    def product(self) -> global___Product:
+        """The product to be uploaded."""
 
     def __init__(
         self,
         *,
-        supply_inventory: global___Product | None = ...,
+        product: global___Product | None = ...,
     ) -> None: ...
-    def HasField(self, field_name: typing.Literal["supply_inventory", b"supply_inventory"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing.Literal["supply_inventory", b"supply_inventory"]) -> None: ...
+    def HasField(self, field_name: typing.Literal["product", b"product"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing.Literal["product", b"product"]) -> None: ...
 
 global___UploadProductInformationRequest = UploadProductInformationRequest
 

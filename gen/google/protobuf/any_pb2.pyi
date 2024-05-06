@@ -31,20 +31,16 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
+
 import builtins
 import google.protobuf.descriptor
 import google.protobuf.internal.well_known_types
 import google.protobuf.message
-import sys
-
-if sys.version_info >= (3, 8):
-    import typing as typing_extensions
-else:
-    import typing_extensions
+import typing
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor
 
-@typing_extensions.final
+@typing.final
 class Any(google.protobuf.message.Message, google.protobuf.internal.well_known_types.Any):
     """`Any` contains an arbitrary serialized protocol buffer message along with a
     URL that describes the type of the serialized message.
@@ -175,6 +171,6 @@ class Any(google.protobuf.message.Message, google.protobuf.internal.well_known_t
         type_url: builtins.str = ...,
         value: builtins.bytes = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing_extensions.Literal["type_url", b"type_url", "value", b"value"]) -> None: ...
+    def ClearField(self, field_name: typing.Literal["type_url", b"type_url", "value", b"value"]) -> None: ...
 
 global___Any = Any

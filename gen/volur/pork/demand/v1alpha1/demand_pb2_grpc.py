@@ -19,7 +19,7 @@ class DemandInformationServiceStub(object):
                 '/volur.pork.demand.v1alpha1.DemandInformationService/UploadDemandInformation',
                 request_serializer=volur_dot_pork_dot_demand_dot_v1alpha1_dot_demand__pb2.UploadDemandInformationRequest.SerializeToString,
                 response_deserializer=volur_dot_pork_dot_demand_dot_v1alpha1_dot_demand__pb2.UploadDemandInformationResponse.FromString,
-                )
+                _registered_method=True)
 
 
 class DemandInformationServiceServicer(object):
@@ -64,8 +64,18 @@ class DemandInformationService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.stream_stream(request_iterator, target, '/volur.pork.demand.v1alpha1.DemandInformationService/UploadDemandInformation',
+        return grpc.experimental.stream_stream(
+            request_iterator,
+            target,
+            '/volur.pork.demand.v1alpha1.DemandInformationService/UploadDemandInformation',
             volur_dot_pork_dot_demand_dot_v1alpha1_dot_demand__pb2.UploadDemandInformationRequest.SerializeToString,
             volur_dot_pork_dot_demand_dot_v1alpha1_dot_demand__pb2.UploadDemandInformationResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
