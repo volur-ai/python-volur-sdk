@@ -5,19 +5,22 @@ import io
 import pathlib
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import AsyncIterator
+from typing import Any, AsyncIterator, Iterable
 
 import anyio
-from loguru import logger
 from volur.pork.materials.v1alpha3 import material_pb2
-from volur.pork.shared.v1alpha1 import quantity_pb2
 from volur.sdk.v1alpha1.sources.csv.base import MaterialsSource
-from volur.sdk.v1alpha2.sources.csv import shared
-from volur.sdk.v1alpha2.sources.csv.base import (
+
+from .base import (
     CharacteristicColumn,
     Column,
     QuantityColumn,
 )
+
+
+def buffered_io_base_to_str_iterable(source: io.BufferedIOBase) -> Iterable[str]:
+    while data := source.readline():
+        yield data.strip().decode(encoding="utf-8")
 
 
 @dataclass
@@ -84,6 +87,7 @@ class MaterialsCSVFileSource(MaterialsSource):
     """  # noqa: E501
 
     path: str | pathlib.Path | io.BufferedIOBase
+    has_header: bool = field(default=True)
     _data: AsyncIterator[material_pb2.Material] | None = field(
         default=None,
         init=False,
@@ -95,26 +99,25 @@ class MaterialsCSVFileSource(MaterialsSource):
     material_id_column: Column | None = field(default=None)
     plant_id_column: Column | None = field(default=None)
     quantity_column: QuantityColumn | None = field(default=None)
-    characteristics_columns: list[CharacteristicColumn] = field(default_factory=list)
+    characteristics_columns: list[CharacteristicColumn] = field(
+        default_factory=list,
+    )
 
     @property
     def columns(
         self: "MaterialsCSVFileSource",
-    ) -> list[str]:
-        _: list[str] = []
+    ) -> list[str | int]:
+        _: list[str | int] = []
         if self.material_id_column:
-            if self.material_id_column.column_name:
-                _.append(self.material_id_column.column_name)
+            if self.material_id_column:
+                _.append(self.material_id_column.column_id)
         if self.plant_id_column:
-            if self.plant_id_column.column_name:
-                _.append(self.plant_id_column.column_name)
+            _.append(self.plant_id_column.column_id)
         if self.quantity_column:
-            if self.quantity_column.column_name:
-                _.append(self.quantity_column.column_name)
+            _.append(self.quantity_column.column_id)
         if self.characteristics_columns:
             for characteristic in self.characteristics_columns:
-                if characteristic.column_name:
-                    _.append(characteristic.column_name)
+                _.append(characteristic.column_id)
         return _
 
     def __aiter__(
@@ -133,13 +136,21 @@ class MaterialsCSVFileSource(MaterialsSource):
             raise StopAsyncIteration()
         return data
 
-    async def _load(
+    def _load(
         self: "MaterialsCSVFileSource",
     ) -> AsyncIterator[material_pb2.Material]:
-        logger.info("reading data from a CSV file")
+        return (
+            self._load_data_from_a_file_with_header()
+            if self.has_header
+            else self._load_data_from_a_file_without_header()
+        )
+
+    async def _load_data_from_a_file_with_header(
+        self: "MaterialsCSVFileSource",
+    ) -> AsyncIterator[material_pb2.Material]:
         if isinstance(self.path, io.BufferedIOBase):
             reader = csv.DictReader(
-                shared.buffered_io_base_to_str_iterable(self.path),
+                buffered_io_base_to_str_iterable(self.path),
                 delimiter=self.delimiter,
             )
             for data in reader:
@@ -166,38 +177,73 @@ class MaterialsCSVFileSource(MaterialsSource):
                         ),
                     )
                     yield self._create_material(data)
-        logger.info("finished reading data from a CSV file")
+
+    async def _load_data_from_a_file_without_header(
+        self: "MaterialsCSVFileSource",
+    ) -> AsyncIterator[material_pb2.Material]:
+        if isinstance(self.path, io.BufferedIOBase):
+            dialect = csv.Sniffer().sniff(self.path.read(1024).decode("utf-8"))
+            self.path.seek(0)
+            reader = csv.reader(
+                buffered_io_base_to_str_iterable(self.path),
+                dialect=dialect,
+                strict=True,
+            )
+            first_row = next(reader)
+            number_of_columns = max(
+                max(self.columns),
+                len(first_row),
+            )
+            self.path.seek(0)
+            reader = csv.reader(
+                buffered_io_base_to_str_iterable(self.path),
+                dialect=dialect,
+                strict=True,
+            )
+            for _ in reader:
+                data = dict(zip(range(number_of_columns), _))  # type: ignore[arg-type]
+                print(data)
+                yield self._create_material(data)  # type: ignore[arg-type]
+        if isinstance(self.path, (str, Path)):
+            with open(self.path, mode="r") as source:
+                reader = csv.reader(
+                    source,
+                    delimiter=self.delimiter,
+                    strict=True,
+                )
+                first_row = next(reader)
+                number_of_columns = max(max(self.columns), len(first_row))
+                source.seek(0)
+                async for row in anyio.wrap_file(source):
+                    data = dict(
+                        zip(
+                            range(number_of_columns),  # type: ignore[arg-type]
+                            next(
+                                csv.reader(
+                                    [row],
+                                    delimiter=self.delimiter,
+                                    strict=True,
+                                )
+                            ),
+                        ),
+                    )
+                    yield self._create_material(data)  # type: ignore[arg-type]
 
     def _create_material(
         self: "MaterialsCSVFileSource",
-        data: dict[str, str],
+        data: dict[str | int, Any],
     ) -> material_pb2.Material:
         material = material_pb2.Material()
         if self.material_id_column:
-            _ = data.get(self.material_id_column.column_name, None)
-            if _ is not None and _ != "":
-                material.material_id = _
-            else:
-                raise ValueError(
-                    f"""material id is required, found empty value
-                    in material id column {self.material_id_column.column_name}"""
-                )
-        if self.plant_id_column:
-            _ = data.get(self.plant_id_column.column_name, None)
-            if _ is not None and _ != "":
-                material.plant = _
-            else:
-                raise ValueError(
-                    f"""plant id is required, found empty value
-                    in plant id column {self.plant_id_column.column_name}"""
-                )
-        if self.quantity_column:
-            quantity_value = shared.load_quantity(
-                data.get(self.quantity_column.column_name),
-                self.quantity_column,
+            material.material_id = data.get(
+                self.material_id_column.column_id,
+                None,
             )
-            quantity = quantity_pb2.Quantity()
-            quantity.value.CopyFrom(quantity_value)
+            # todo: support auto-generation of material_id
+        if self.plant_id_column:
+            material.plant = data.get(self.plant_id_column.column_id, None)
+        if self.quantity_column:
+            quantity = self.quantity_column.get_value(data)
             material.quantity.CopyFrom(quantity)
         if self.characteristics_columns:
             material.characteristics.extend(

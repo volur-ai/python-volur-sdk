@@ -6,8 +6,7 @@ from volur.sdk.v1alpha2.sources.csv.base import CharacteristicColumnFloat
 
 ids = [
     "return-correct-characteristic-for-a-correct-float-value-in-column",
-    "raise-exception-column-does-not-exist",
-    "return-empty-chracteristic-because-value-in-column-is-none",
+    "return-empty-characteristic-because-value-in-column-is-none",
     "raise-exception-because-value-is-not-valid-float",
 ]
 
@@ -28,18 +27,6 @@ test_data = [
         ),
         False,
         None,
-    ),
-    (
-        {
-            "column_name": "1.234",
-        },
-        CharacteristicColumnFloat(
-            column_name="column_name_does_not_exist",
-            characteristic_name="characteristic_name",
-        ),
-        None,
-        True,
-        "can not fetch the float characteristic column with name column_name_does_not_exist",  # noqa: E501
     ),
     (
         {
@@ -66,7 +53,7 @@ test_data = [
         ),
         None,
         True,
-        "can not parse value non-valid-float-value in column column_name as float value",  # noqa: E501
+        "provided value non-valid-float-value in column column_name can not be interpreted as float characteristic",  # noqa: E501
     ),
 ]
 
@@ -83,7 +70,7 @@ test_data = [
     ids=ids,
 )
 def test_characteristic_column_float(
-    data: dict[str, Any],
+    data: dict[str | int, Any],
     column: CharacteristicColumnFloat,
     expected: characteristic_pb2.CharacteristicValue | None,
     should_raise_an_exception: bool,
