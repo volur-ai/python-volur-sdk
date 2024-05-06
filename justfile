@@ -10,6 +10,10 @@ clean:
     find {{ justfile_directory() }} -type f -name '*.bin' -exec rm -rf {} +
     find {{ justfile_directory() }} -type f -name '*.html' -exec rm -rf {} +
     find {{ justfile_directory() }} -type f -name '*.csv' -exec rm -rf {} +
+    find {{ justfile_directory() }} -type d -name '.mypy_cache' -exec rm -rf {} +
+    find {{ justfile_directory() }} -type d -name '.ruff_cache' -exec rm -rf {} +
+    find {{ justfile_directory() }} -type d -name '.ipynb_checkpoints' -exec rm -rf {} +
+    find {{ justfile_directory() }} -type d -name 'htmlcov' -exec rm -rf {} +
 
 # install all required dependencies
 configure:
@@ -49,9 +53,11 @@ validate: configure
     poetry run ruff check src tests examples scripts *.ipynb && \
     poetry run mypy src tests examples scripts
 
+test_args := ""
+
 # run tests
-test: configure
-    poetry run pytest tests
+test:
+    poetry run pytest tests {{ test_args }}
 
 # build documentation
 build-docs:
@@ -60,12 +66,6 @@ build-docs:
 # serve documentation
 serve-docs:
     poetry run mkdocs serve
-
-docs_container := ""
-
-# deploy documentation using static website hosting in Azure Storage
-deploy-docs: build-docs
-    rclone sync site :azureblob,env_auth,account={{ docs-container }}:\$web
 
 # run CI locally
 ci: validate test build-docs
