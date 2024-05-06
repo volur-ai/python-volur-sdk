@@ -43,15 +43,15 @@ generate:
 
 # fix auto-fixable issues
 fix: configure
-    poetry run ruff format src tests examples scripts && \
-    poetry run ruff check --fix --unsafe-fixes src tests examples scripts
+    poetry run ruff format src tests scripts && \
+    poetry run ruff check --fix --unsafe-fixes src tests scripts
 
 # validate code and configuration
 validate: configure
     poetry check --lock && \
-    poetry run ruff format --check src tests examples scripts *.ipynb && \
-    poetry run ruff check src tests examples scripts *.ipynb && \
-    poetry run mypy src tests examples scripts
+    poetry run ruff format --check src tests scripts *.ipynb && \
+    poetry run ruff check src tests scripts *.ipynb && \
+    poetry run mypy src tests scripts
 
 test_args := ""
 
