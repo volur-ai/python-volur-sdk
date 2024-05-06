@@ -19,7 +19,7 @@ class FakeMaterial:
 
 def generate_fake_material(faker: Faker) -> FakeMaterial:
     return FakeMaterial(
-        material_id=faker.uuid4(),
+        material_id=faker.uuid4(),  # type: ignore[arg-type]
         arrived_at=faker.date_time_this_decade(),
         weight=faker.random_number(digits=2),
         product_label=faker.word(),
