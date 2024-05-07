@@ -1,12 +1,13 @@
 import sys
 
 from loguru import logger
-from volur.sdk import (
-    CharacteristicColumn,
+from volur.sdk.v1alpha2 import VolurClient
+from volur.sdk.v1alpha2.sources.csv import (
+    CharacteristicColumnString,
+    CharacteristicColumnBool,
     Column,
     MaterialsCSVFileSource,
     QuantityColumn,
-    VolurClient,
 )
 
 logger.configure(handlers=[{"sink": sys.stderr, "level": "INFO"}])
@@ -24,24 +25,21 @@ def main() -> None:
                 unit="kilogram",
             ),
             characteristics_columns=[
-                CharacteristicColumn(
+                CharacteristicColumnString(
                     column_name="ARRIVED_AT",
                     characteristic_name="arrived_at",
                 ),
-                CharacteristicColumn(
+                CharacteristicColumnString(
                     column_name="PRODUCT_LABEL",
                     characteristic_name="product_label",
-                    data_type="string",
                 ),
-                CharacteristicColumn(
+                CharacteristicColumnString(
                     column_name="QUALITY_CATEGORY",
                     characteristic_name="quality_category",
-                    data_type="string",
                 ),
-                CharacteristicColumn(
+                CharacteristicColumnBool(
                     column_name="SOME_DUMMY_BOOLEAN_VALUE",
                     characteristic_name="is_frozen",
-                    data_type="bool",
                 ),
             ],
         )

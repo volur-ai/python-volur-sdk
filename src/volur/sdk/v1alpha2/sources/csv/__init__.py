@@ -1,4 +1,4 @@
-from volur.sdk.v1alpha2.sources.csv.base import (
+from .base import (
     CharacteristicColumn,
     CharacteristicColumnBool,
     CharacteristicColumnFloat,
@@ -7,7 +7,7 @@ from volur.sdk.v1alpha2.sources.csv.base import (
     Column,
     QuantityColumn,
 )
-from volur.sdk.v1alpha2.sources.csv.source import (
+from .source import (
     MaterialsCSVFileSource,
 )
 
