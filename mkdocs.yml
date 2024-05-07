@@ -1,4 +1,4 @@
-site_name: Völur AI SDK documentation
+site_name: Volur AI SDK documentation
 repo_url: https://github.com/volur-ai/python-volur-ai-sdk
 theme:
   name: material
@@ -22,7 +22,9 @@ plugins:
             - gen
           import:
             - https://googleapis.dev/python/google-api-core/latest/objects.inv
+# Please keep the following list of extensions in alphabetical order
 markdown_extensions:
+  - admonition
   - pymdownx.highlight:
       anchor_linenums: true
       line_spans: __span
@@ -30,9 +32,14 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
 nav:
-  - Code Reference: reference/
-  - 'index.md'
+  - Getting started: getting-started.md
+  - Installation: installation.md
+  - Authentication: authentication.md
+  - Examples: examples/
+  - API Reference: reference/
 watch:
   - src/
   - gen/

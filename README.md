@@ -5,18 +5,10 @@ interact with the Volur AI API.
 
 ## Install
 
-This library can be installed as a Python package using `pip` or any other
-Python package manager (Poetry, Rye, uv, etc.).
+Go to the [Installation][installation] page for more
+information.
 
-```shell
-pip install git+ssh://git@github.com/volur-ai/python-volur-ai-sdk.git@main
-```
-
-or using `https` protocol:
-
-```shell
-pip install git+https://github.com/volur-ai/python-volur-ai-sdk.git@main
-```
+[installation]: https://docs.volur.ai/installation
 
 ## How to use the library
 
