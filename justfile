@@ -59,6 +59,9 @@ test_args := ""
 test:
     poetry run pytest tests {{ test_args }}
 
+configure-docs:
+    poetry install --only docs --sync
+
 # build documentation
 build-docs:
     poetry run mkdocs build --strict
