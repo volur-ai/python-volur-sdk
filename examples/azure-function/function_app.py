@@ -1,9 +1,10 @@
 import logging
 
 from azure.functions import FunctionApp, InputStream
-from volur.sdk.client import VolurClient
-from volur.sdk.sources.csv import (
-    CharacteristicColumn,
+from volur.sdk.v1alpha2 import VolurClient
+from volur.sdk.v1alpha2.sources.csv import (
+    CharacteristicColumnBool,
+    CharacteristicColumnString,
     Column,
     MaterialsCSVFileSource,
     QuantityColumn,
@@ -30,24 +31,21 @@ def run(source: InputStream) -> None:
                 unit="kilogram",
             ),
             characteristics_columns=[
-                CharacteristicColumn(
+                CharacteristicColumnString(
                     column_name="ARRIVED_AT",
                     characteristic_name="arrived_at",
                 ),
-                CharacteristicColumn(
+                CharacteristicColumnString(
                     column_name="PRODUCT_LABEL",
                     characteristic_name="product_label",
-                    data_type="string",
                 ),
-                CharacteristicColumn(
+                CharacteristicColumnString(
                     column_name="QUALITY_CATEGORY",
                     characteristic_name="quality_category",
-                    data_type="string",
                 ),
-                CharacteristicColumn(
+                CharacteristicColumnBool(
                     column_name="SOME_DUMMY_BOOLEAN_VALUE",
                     characteristic_name="is_frozen",
-                    data_type="bool",
                 ),
             ],
         )
