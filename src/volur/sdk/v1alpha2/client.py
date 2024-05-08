@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 
 from loguru import logger
 from volur.api.v1alpha1.client import VolurApiAsyncClient
-from volur.sdk.v1alpha1.sources.csv.base import MaterialsSource
+from volur.sdk.v1alpha2.sources import MaterialsSource
 
 
 @dataclass

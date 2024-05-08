@@ -2,7 +2,7 @@ from typing import Any
 
 import pytest
 from volur.pork.shared.v1alpha1 import characteristic_pb2
-from volur.sdk.v1alpha2.sources.csv.base import CharacteristicColumnBool
+from volur.sdk.v1alpha2.sources.csv import CharacteristicColumnBool
 
 create_characteristic_column_bool_test_ids = [
     "create-a-charachteristic-column-bool",

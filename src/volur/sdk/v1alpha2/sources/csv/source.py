@@ -9,11 +9,11 @@ from typing import Any, AsyncIterator, Iterable
 
 import anyio
 from volur.pork.materials.v1alpha3 import material_pb2
-from volur.sdk.v1alpha1.sources.csv.base import MaterialsSource
 
 from .base import (
     CharacteristicColumn,
     Column,
+    MaterialsSource,
     QuantityColumn,
 )
 

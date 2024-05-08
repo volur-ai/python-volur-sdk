@@ -2,7 +2,7 @@ from typing import Any, Literal
 
 import pytest
 from volur.pork.shared.v1alpha1 import quantity_pb2
-from volur.sdk.v1alpha2.sources.csv.base import QuantityColumn
+from volur.sdk.v1alpha2.sources.csv import QuantityColumn
 
 create_quantity_column_test_ids = [
     "create-quantity-column-with-name",

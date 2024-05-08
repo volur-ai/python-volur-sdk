@@ -5,6 +5,7 @@ from .base import (
     CharacteristicColumnInteger,
     CharacteristicColumnString,
     Column,
+    MaterialsSource,
     QuantityColumn,
 )
 from .source import (
@@ -18,6 +19,7 @@ __all__ = [
     "CharacteristicColumnInteger",
     "CharacteristicColumnString",
     "Column",
+    "MaterialsSource",
     "MaterialsCSVFileSource",
     "QuantityColumn",
 ]
