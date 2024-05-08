@@ -8,15 +8,15 @@ from volur.pork.shared.v1alpha1.characteristic_pb2 import (
     CharacteristicValue,
 )
 from volur.pork.shared.v1alpha1.quantity_pb2 import Quantity, QuantityValue
-from volur.sdk.v1alpha2.sources.csv.base import (
+from volur.sdk.v1alpha2.sources.csv import (
     CharacteristicColumnBool,
     CharacteristicColumnFloat,
     CharacteristicColumnInteger,
     CharacteristicColumnString,
     Column,
+    MaterialsCSVFileSource,
     QuantityColumn,
 )
-from volur.sdk.v1alpha2.sources.csv.source import MaterialsCSVFileSource
 
 
 @pytest.fixture()
