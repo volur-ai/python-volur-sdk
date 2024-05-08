@@ -3,8 +3,8 @@ import sys
 from loguru import logger
 from volur.sdk.v1alpha2 import VolurClient
 from volur.sdk.v1alpha2.sources.csv import (
-    CharacteristicColumnString,
     CharacteristicColumnBool,
+    CharacteristicColumnString,
     Column,
     MaterialsCSVFileSource,
     QuantityColumn,

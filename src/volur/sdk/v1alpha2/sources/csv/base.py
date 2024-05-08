@@ -5,6 +5,7 @@ from dataclasses import InitVar, dataclass, field
 from typing import Any, AsyncIterator, Literal
 
 from volur.pork.materials.v1alpha3 import material_pb2
+from volur.pork.products.v1alpha3 import product_pb2
 from volur.pork.shared.v1alpha1 import characteristic_pb2, quantity_pb2
 
 
@@ -280,3 +281,31 @@ class CharacteristicColumnBool(CharacteristicColumn):
                 raise ValueError(
                     f"provided value {_} in column {self.column_id} can not be interpreted as bool characteristic"  # noqa: E501
                 )
+
+
+@dataclass
+class ProductsSource:
+    """
+    Base class for the product sources.
+    This class in an abstract class that defines the interface for the products CSV
+    source.
+    """
+
+    @abc.abstractmethod
+    def __aiter__(self: "ProductsSource") -> AsyncIterator[product_pb2.Product]:
+        """ProductSource implements Asynchronous Iterator.
+        This allows you to use any implementation of ProductsSource as
+        ```python title="example.py" linenums="1"
+        source = ProductSourceImplementation()
+        for _ in source:
+            # do something with Product
+        ```
+        """
+        ...
+
+    @abc.abstractmethod
+    async def __anext__(
+        self: "ProductsSource",
+    ) -> product_pb2.Product:
+        """You can fetch the next element in the asynchronous iterator."""
+        ...
