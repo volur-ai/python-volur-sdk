@@ -1,3 +1,5 @@
+from volur.sdk.v1alpha2.sources.csv.base import ProductsSource
+
 from .base import (
     CharacteristicColumn,
     CharacteristicColumnBool,
@@ -10,9 +12,12 @@ from .base import (
 )
 from .source import (
     MaterialsCSVFileSource,
+    ProductsCSVFileSource,
 )
 
 __all__ = [
+    "ProductsSource",
+    "ProductsCSVFileSource",
     "CharacteristicColumn",
     "CharacteristicColumnBool",
     "CharacteristicColumnFloat",

@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 
 from loguru import logger
 from volur.api.v1alpha1.client import VolurApiAsyncClient
-from volur.sdk.v1alpha2.sources import MaterialsSource
+from volur.sdk.v1alpha2.sources import MaterialsSource, ProductsSource
 
 
 @dataclass
@@ -44,3 +44,19 @@ class VolurClient:
                 response_status_code=result.code,
                 response_status_message=result.message,
             )
+
+    def upload_products_information(
+        self: "VolurClient",
+        products: ProductsSource,
+    ) -> None:
+        result = asyncio.run(
+            self.api.upload_products_information(products),
+            debug=self.api.settings.debug,
+        )
+        if result.code != 0:
+            logger.error(
+                "error occurred while uploading products information",
+                response_status_code=result.code,
+                response_status_message=result.message,
+            )
+        logger.info("successfully uploaded products information")
