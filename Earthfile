@@ -75,10 +75,9 @@ fix:
 # type checking)
 validate:
     FROM +configure
-    COPY *.ipynb .
     RUN poetry check --lock && \
-        poetry run ruff format --check src tests scripts *.ipynb && \
-        poetry run ruff check src tests scripts *.ipynb && \
+        poetry run ruff format --check src tests scripts && \
+        poetry run ruff check src tests scripts && \
         poetry run mypy src tests scripts
 
 # test runs the library unit tests
