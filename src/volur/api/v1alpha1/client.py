@@ -125,7 +125,7 @@ class VolurApiAsyncClient:
         status of the operation.
 
         Args:
-            products: a source of materials data to be uploaded to the Völur
+            products: an iterable of Product protos to be uploaded via API
                 platform.
 
         Returns:
@@ -146,7 +146,7 @@ class VolurApiAsyncClient:
                 )
 
         try:
-            logger.info("start uploading materials data")
+            logger.info("start uploading products data")
             channel = grpc.aio.secure_channel(
                 self.settings.address,
                 grpc.ssl_channel_credentials(),

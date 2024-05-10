@@ -288,15 +288,13 @@ class ProductsCSVFileSource(ProductsSource):
                 "product_id",
             ),
             characteristics_columns=[
-                CharacteristicColumn(
-                    "description",
-                    "string",
+                CharacteristicColumnString(
+                    column_name="description",
                     characteristic_name="description",
                 ),
-                CharacteristicColumn(
-                    "plant_number",
-                    "integer",
-                    characteristic_name="plant_number",
+                CharacteristicColumnString(
+                    column_name="plant_code",
+                    characteristic_name="plant_code",
                 ),
             ],
         )
