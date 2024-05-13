@@ -1,7 +1,6 @@
-# Volur AI SDK
+# Völur SDK
 
-This is the Python SDK for the Volur AI platform. It provides a set of tools to
-interact with the Volur AI API.
+This is the Python SDK for the Völur products and services.
 
 ## Install
 

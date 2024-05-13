@@ -1,6 +1,6 @@
 # Authentication
 
-In order to be able to use Volur AI SDK you need to have the following
+In order to be able to use Völur SDK you need to have the following
 credentials:
 
 - API endpoint,

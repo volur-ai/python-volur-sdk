@@ -1,25 +1,25 @@
 # Getting started
 
-Volur AI SDK is a Python package that provides a simple interface for
-interacting with the Volur AI API. It is designed to be easy to use and
-integrate seamlessly with your existing development workflow.
+Völur SDK is a Python package that provides a simple interface for
+interacting with the Völur products and services. It is designed to be easy to
+use and integrate seamlessly with your existing development workflow.
 
-## What is Volur AI SDK?
+## What is Völur SDK?
 
-Volur AI SDK helps you to integrate with the Volur AI API. At the moment,
+Völur SDK helps you to integrate with the Völur API. At the moment,
 the core functionality of the SDK is to provide a simple interface for
-uploading the data to the Volur AI platform.
+uploading the data to the Völur platform.
 
-## Volur AI SDK Model
+## Völur SDK Model
 
-The Volur AI SDK is based on the following model:
+The Völur SDK is based on the following model:
 
 - **Client**: the main entry point for your application. It provides a
-  simple interface for interacting with the Volur AI API.
+  simple interface for interacting with the Völur API.
 - **Endpoints**: a set of different endpoints that you can use to interact
-  with the Volur AI API.
+  with the Völur API.
 - **Sources**: a set of different sources that you can use to upload data
-  to the Volur AI platform.
+  to the Völur platform.
 
 ## How can I use the SDK?
 
@@ -37,7 +37,7 @@ providing [the necessary credentials][authentication].
 [authentication]: authentication.md
 
 !!! note "Obtain credentials from Volur developers"
-    To use the Volur AI SDK, you need to obtain the necessary credentials from
+    To use the Völur SDK, you need to obtain the necessary credentials from
     the Volur developers. Please contact us to get the credentials.
 
 ```python title="example.py" linenums="1"

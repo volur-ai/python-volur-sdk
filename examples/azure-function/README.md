@@ -1,6 +1,6 @@
-# Use Volur AI SDK with Azure Function App
+# Use Völur SDK with Azure Function App
 
-This example contains code on how to use Volur AI SDK with Azure Function App.
+This example contains code on how to use Völur SDK with Azure Function App.
 
 ## Prerequisites
 
@@ -30,7 +30,7 @@ This example contains code on how to use Volur AI SDK with Azure Function App.
 
 ## Required infrastructure
 
-In order to deploy an Azure Function to upload data using Volur AI SDK, this
+In order to deploy an Azure Function to upload data using Völur SDK, this
 infrastructure must be in-place in an Azure Resource Group:
 
 - Azure Storage Container with a blob container,
@@ -66,14 +66,14 @@ default storage account of the Azure Function.
 ## Deployment
 
 If all your infrastructure is in-place, you can start deploying Azure Function
-with Volur AI SDK to your Azure cloud environment. You need to run three steps.
+with Völur SDK to your Azure cloud environment. You need to run three steps.
 
 ### Build a container image and push it to your Azure Container Registry
 
 To build your container image run the following commands:
 
 > [!NOTE]
-> As for now (2024-04-32) Volur AI SDK library is private, and therefore
+> As for now (2024-04-32) Völur SDK library is private, and therefore
 > requires authentication. Please set `GH_TOKEN` environment variable before
 > you build container using GitHub CLI `GH_TOKEN=$(gh auth token)`.
 
