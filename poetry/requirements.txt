@@ -409,9 +409,9 @@ platformdirs==4.2.0 \
     # via
     #   poetry
     #   virtualenv
-poetry==1.8.2 \
-    --hash=sha256:49cceb3838104647c3e1021f3a4f13c6053704cc18d33f849a90fe687a29cb73 \
-    --hash=sha256:b42b400d9a803af6e788a30a6f3e9998020b77860e28df20647eb10b6f414910
+poetry==1.8.3 \
+    --hash=sha256:67f4eb68288eab41e841cc71a00d26cf6bdda9533022d0189a145a34d0a35f48 \
+    --hash=sha256:88191c69b08d06f9db671b793d68f40048e8904c0718404b63dcc2b5aec62d13
     # via
     #   -r requirements.in
     #   poetry-plugin-export
