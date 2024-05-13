@@ -1,10 +1,10 @@
 # Configure CSV source for Materials
 
-This example will guide you through the process of configuring a CSV source for materials using Volur AI SDK.
+This example will guide you through the process of configuring a CSV source for materials using Völur SDK.
 
 ## What are sources?
 
-A source is a way to prepare your data to upload it to the Volur AI platform.
+A source is a way to prepare your data to upload it to the Völur.
 
 Available sources can be found in
 [`volur.sdk.v1alpha2.sources`][volur.sdk.v1alpha2.sources]. For this specific
@@ -72,9 +72,9 @@ Let's break down the configuration:
     - `Quality Category` is mapped to the `quality_category` characteristic,
     - `Is Frozen` is mapped to the `is_frozen` characteristic.
 
-# Use a source with a Volur AI SDK client
+# Use a source with a Völur SDK client
 
-To use the source with a Volur AI SDK client, you can use the following code:
+To use the source with a Völur SDK client, you can use the following code:
 
 ```python linenums="1"
 from volur.sdk.v1alpha2 import VolurClient
@@ -85,4 +85,4 @@ client = VolurClient()
 client.upload_materials_information(source)
 ```
 
-That's it! You have successfully configured a CSV source for materials using Volur AI SDK.
+That's it! You have successfully configured a CSV source for materials using Völur SDK.

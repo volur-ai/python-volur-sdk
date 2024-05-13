@@ -27,13 +27,13 @@ For installing the library using `pip`, you can use the following command:
 === "SSH"
 
     ```shell
-    pip install git+ssh://git@github.com/volur-ai/python-volur-ai-sdk.git@main
+    pip install git+ssh://git@github.com/volur-ai/python-volur-sdk.git@main
     ```
 
 === "HTTPS"
 
     ```shell
-    pip install git+https://github.com/volur-ai/python-volur-ai-sdk.git@main
+    pip install git+https://github.com/volur-ai/python-volur-sdk.git@main
     ```
 
 For more information on installing packages from Git repositories using `pip`,
@@ -49,13 +49,13 @@ For installing the library using `poetry`, you can use the following command:
 === "SSH"
 
     ```shell
-    poetry add git+ssh://git@github.com/volur-ai/python-volur-ai-sdk.git@main
+    poetry add git+ssh://git@github.com/volur-ai/python-volur-sdk.git@main
     ```
 
 === "HTTPS"
 
     ```shell
-    poetry add git+https://github.com/volur-ai/python-volur-ai-sdk.git@main
+    poetry add git+https://github.com/volur-ai/python-volur-sdk.git@main
     ```
 
 For more information on installing packages from Git repositories using

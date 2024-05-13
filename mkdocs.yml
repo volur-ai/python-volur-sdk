@@ -1,5 +1,5 @@
-site_name: Volur AI SDK documentation
-repo_url: https://github.com/volur-ai/python-volur-ai-sdk
+site_name: Völur SDK documentation
+repo_url: https://github.com/volur-ai/python-volur-sdk
 theme:
   name: material
   features:
