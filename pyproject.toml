@@ -6,16 +6,18 @@ authors = []
 packages = [
     { include = "volur", from="src" },
     { include = "volur", from="gen" },
+    # Including this temporary
+    # A library from Google is supporting protobuf ^5.0
+    # https://github.com/googleapis/python-api-common-protos/commit/28fc17a9208aa98782acc6bee6c40ec12b959706
+    # We need to wait for a release
+    { include = "google", from="gen" },
 ]
 
 [tool.poetry.dependencies]
 python = ">=3.11,<3.12"
-grpcio = "^1.63"
-grpcio-tools = "^1.62"
-protobuf = "^4.25"
-pydantic = "^2.7"
+grpcio = ">=1.62,<1.63"
+protobuf = "^5.26"
 pydantic-settings = "^2.2"
-aiofiles = "^23.2"
 loguru = "^0.7"
 azure-functions = "^1.19.0"
 anyio = "^4.3.0"
