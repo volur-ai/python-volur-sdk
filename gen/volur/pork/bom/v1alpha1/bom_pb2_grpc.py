@@ -19,7 +19,7 @@ class BomInformationServiceStub(object):
                 '/volur.pork.bom.v1alpha1.BomInformationService/UploadBomInformation',
                 request_serializer=volur_dot_pork_dot_bom_dot_v1alpha1_dot_bom__pb2.UploadBomInformationRequest.SerializeToString,
                 response_deserializer=volur_dot_pork_dot_bom_dot_v1alpha1_dot_bom__pb2.UploadBomInformationResponse.FromString,
-                _registered_method=True)
+                )
 
 
 class BomInformationServiceServicer(object):
@@ -64,18 +64,8 @@ class BomInformationService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.stream_stream(
-            request_iterator,
-            target,
-            '/volur.pork.bom.v1alpha1.BomInformationService/UploadBomInformation',
+        return grpc.experimental.stream_stream(request_iterator, target, '/volur.pork.bom.v1alpha1.BomInformationService/UploadBomInformation',
             volur_dot_pork_dot_bom_dot_v1alpha1_dot_bom__pb2.UploadBomInformationRequest.SerializeToString,
             volur_dot_pork_dot_bom_dot_v1alpha1_dot_bom__pb2.UploadBomInformationResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
