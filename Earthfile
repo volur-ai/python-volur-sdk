@@ -66,7 +66,8 @@ lock-dependencies:
 
 # generate generates code from the APIs declarations
 generate:
-    BUILD github.com/volur-ai/apis:main+generate-python
+    ARG APIS_REF="main"
+    BUILD github.com/volur-ai/apis:$APIS_REF+generate-python
 
 # fix fixes all auto-fixable formatting and linting issues
 fix:
