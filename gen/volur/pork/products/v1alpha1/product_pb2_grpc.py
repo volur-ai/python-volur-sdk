@@ -19,7 +19,7 @@ class ProductInformationServiceStub(object):
                 '/volur.pork.products.v1alpha1.ProductInformationService/UploadProductInformation',
                 request_serializer=volur_dot_pork_dot_products_dot_v1alpha1_dot_product__pb2.UploadProductInformationRequest.SerializeToString,
                 response_deserializer=volur_dot_pork_dot_products_dot_v1alpha1_dot_product__pb2.UploadProductInformationResponse.FromString,
-                _registered_method=True)
+                )
 
 
 class ProductInformationServiceServicer(object):
@@ -64,18 +64,8 @@ class ProductInformationService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.stream_stream(
-            request_iterator,
-            target,
-            '/volur.pork.products.v1alpha1.ProductInformationService/UploadProductInformation',
+        return grpc.experimental.stream_stream(request_iterator, target, '/volur.pork.products.v1alpha1.ProductInformationService/UploadProductInformation',
             volur_dot_pork_dot_products_dot_v1alpha1_dot_product__pb2.UploadProductInformationRequest.SerializeToString,
             volur_dot_pork_dot_products_dot_v1alpha1_dot_product__pb2.UploadProductInformationResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

@@ -18,7 +18,7 @@ class GreeterServiceStub(object):
                 '/volur.helloworld.v1beta1.GreeterService/SayHello',
                 request_serializer=volur_dot_helloworld_dot_v1beta1_dot_hello__world__pb2.SayHelloRequest.SerializeToString,
                 response_deserializer=volur_dot_helloworld_dot_v1beta1_dot_hello__world__pb2.SayHelloResponse.FromString,
-                _registered_method=True)
+                )
 
 
 class GreeterServiceServicer(object):
@@ -59,18 +59,8 @@ class GreeterService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/volur.helloworld.v1beta1.GreeterService/SayHello',
+        return grpc.experimental.unary_unary(request, target, '/volur.helloworld.v1beta1.GreeterService/SayHello',
             volur_dot_helloworld_dot_v1beta1_dot_hello__world__pb2.SayHelloRequest.SerializeToString,
             volur_dot_helloworld_dot_v1beta1_dot_hello__world__pb2.SayHelloResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

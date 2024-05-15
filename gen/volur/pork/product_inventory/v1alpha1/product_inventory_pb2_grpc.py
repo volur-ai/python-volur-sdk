@@ -18,7 +18,7 @@ class ProductInventoryInformationServiceStub(object):
                 '/volur.pork.product_inventory.v1alpha1.ProductInventoryInformationService/UploadProductInventoryInformation',
                 request_serializer=volur_dot_pork_dot_product__inventory_dot_v1alpha1_dot_product__inventory__pb2.UploadProductInventoryInformationRequest.SerializeToString,
                 response_deserializer=volur_dot_pork_dot_product__inventory_dot_v1alpha1_dot_product__inventory__pb2.UploadProductInventoryInformationResponse.FromString,
-                _registered_method=True)
+                )
 
 
 class ProductInventoryInformationServiceServicer(object):
@@ -63,18 +63,8 @@ class ProductInventoryInformationService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.stream_stream(
-            request_iterator,
-            target,
-            '/volur.pork.product_inventory.v1alpha1.ProductInventoryInformationService/UploadProductInventoryInformation',
+        return grpc.experimental.stream_stream(request_iterator, target, '/volur.pork.product_inventory.v1alpha1.ProductInventoryInformationService/UploadProductInventoryInformation',
             volur_dot_pork_dot_product__inventory_dot_v1alpha1_dot_product__inventory__pb2.UploadProductInventoryInformationRequest.SerializeToString,
             volur_dot_pork_dot_product__inventory_dot_v1alpha1_dot_product__inventory__pb2.UploadProductInventoryInformationResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
