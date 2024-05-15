@@ -1,4 +1,4 @@
-FROM docker.io/library/python:3.11.9@sha256:db07fba48daaf1c68c03676aadc73866414d25b4c278029f9873c784517613bf AS python
+FROM docker.io/library/python:3.11@sha256:9946ecf04393a46c1ab8ebeba428829d9ea236766221cab390ba457127101dc2 AS python
 FROM mcr.microsoft.com/azure-functions/python:4-python3.11-slim@sha256:019a716b801ada5640cd27d12e9999fa3a72997331aa2db0ab3b8ad95b4148d7 AS azure-functions
 
 FROM python AS requirements
@@ -32,11 +32,7 @@ RUN apt-get update && \
 
 COPY --from=requirements /srv/workspace/requirements.txt .
 
-RUN --mount=type=secret,id=GH_TOKEN \
-    git config \
-        --global \
-        --add url."https://oauth:$(cat /run/secrets/GH_TOKEN)@github.com/volur-ai".insteadOf "https://github.com/volur-ai" && \
-    pip install \
+RUN pip install \
         --no-cache-dir \
         --requirement requirements.txt && \
     rm -rf requirements.txt

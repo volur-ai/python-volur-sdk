@@ -72,15 +72,9 @@ with Völur SDK to your Azure cloud environment. You need to run three steps.
 
 To build your container image run the following commands:
 
-> [!NOTE]
-> As for now (2024-04-32) Völur SDK library is private, and therefore
-> requires authentication. Please set `GH_TOKEN` environment variable before
-> you build container using GitHub CLI `GH_TOKEN=$(gh auth token)`.
-
 ```shell
 docker build \
   --platform linux/amd64 \
-  --secret id=GH_TOKEN \
   --target deployment \
   --tag <change-me-azure-container-registry-name>/<change-me-container-image-name>:<change-me-container-image-tag> \
   .
