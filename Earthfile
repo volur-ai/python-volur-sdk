@@ -37,7 +37,7 @@ generate-requirements:
 # configure installs the library dependencies
 configure:
     FROM +install-base
-    COPY poetry.toml pyproject.toml poetry.lock ./
+    COPY poetry.toml pyproject.toml ./
     COPY mkdocs.yml ./
     RUN poetry install --sync --no-root
     COPY --dir src gen tests examples scripts docs .
@@ -49,20 +49,12 @@ upgrade-dependencies:
     FROM +configure
     RUN poetry upgrade --latest
     SAVE ARTIFACT /srv/workspace/pyproject.toml AS LOCAL pyproject.toml
-    SAVE ARTIFACT /srv/workspace/poetry.lock AS LOCAL poetry.lock
 
 # update-dependencies updates the library dependencies to their latest compatible version
 # according to the constraints in `pyproject.toml`
 update-dependencies:
     FROM +configure
     RUN poetry lock
-    SAVE ARTIFACT /srv/workspace/poetry.lock AS LOCAL poetry.lock
-
-# lock-dependencies locks the library dependencies to their compatible version
-lock-dependencies:
-    FROM +configure
-    RUN poetry lock --no-update
-    SAVE ARTIFACT /srv/workspace/poetry.lock AS LOCAL poetry.lock
 
 # generate generates code from the APIs declarations
 generate:
