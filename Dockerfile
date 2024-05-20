@@ -1,1 +1,1 @@
-FROM docker.io/library/python:3.11@sha256:e453eb723bc8ecac7a797498f9a5915d13e567620d48dcd3568750bac3b59f31 AS python
+FROM docker.io/library/python:3.11@sha256:091e0f5da680e5c972c59cb7eca172141bb6350045b592c284e2fd3bf2916dd9 AS python
