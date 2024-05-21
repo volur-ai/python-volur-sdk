@@ -1,3 +1,5 @@
+# https://just.systems/man/en/chapter_1.html
+
 # list all available commands
 default:
     just --list
@@ -25,38 +27,46 @@ validate:
     poetry run ruff check function_app.py && \
     poetry run mypy function_app.py
 
-acr := ""
-container_image_name := "volur-ai-sdk-azure-function-example"
+container_registry_name := ""
+container_image_name := ""
 docker_image_tag := `date '+%Y%m%d%H%M%S'`
 
 # build a container image for Azure Function App
 build-container-image:
     docker build \
       --platform linux/amd64 \
-      --tag {{ acr }}/{{ container_image_name }}:{{ docker_image_tag }} \
-      --tag {{ acr }}/{{ container_image_name }}:latest \
+      --tag {{ container_registry_name }}/{{ container_image_name }}:{{ docker_image_tag }} \
+      --tag {{ container_registry_name }}/{{ container_image_name }}:latest \
        .
 
 # deploy a container image for Azure Function App
 deploy-container-image: build-container-image
-    docker push {{ acr }}/{{ container_image_name }}:{{ docker_image_tag }} && \
-    docker push {{ acr }}/{{ container_image_name }}:latest
+    docker push {{ container_registry_name }}/{{ container_image_name }}:{{ docker_image_tag }} && \
+    docker push {{ container_registry_name }}/{{ container_image_name }}:latest
 
 afa := ""
 arg := ""
 volur_api_address := ""
 volur_api_token := ""
+acr_password := ""
+acr_username := ""
 
-# deploy Azure Function App
-deploy-function-app acr_password=`az acr credential show -n {{ acr }} -o jsonc | jq -r '.passwords[0].value'` acr_username=`az acr credential show -n {{ acr }} -o jsonc | jq -r '.username'`: deploy-container-image
+# deploy Azure Functions in Docker
+deploy-function-app-docker: deploy-container-image
     az functionapp config container set \
-       --image={{ acr }}/{{ container_image_name }}:{{ docker_image_tag }} \
-       --registry-password={{ acr_password }} \
-       --registry-server={{ acr }} \
+       --image={{ container_registry_name }}/{{ container_image_name }}:{{ docker_image_tag }} \
+       --registry-server={{ container_registry_name }} \
        --registry-username={{ acr_username }} \
-       --name={{ afa }} \
+       --registry-password={{ acr_password }} \
+       --name={{ afa }}-docker \
        --resource-group={{ arg }} && \
     az functionapp config appsettings set \
-        --name={{ afa }} \
+        --name={{ afa }}-docker \
         --resource-group={{ arg }} \
         --settings VOLUR_API_ADDRESS={{ volur_api_address }} VOLUR_API_TOKEN={{ volur_api_token }}
+
+# deploy Azure Functions in Python runtime
+deploy-function-app-python:
+    poetry export --output=requirements.txt --without-hashes
+    func azure functionapp publish {{ afa }}-python --python --build remote
+    rm -rf requirements.txt
