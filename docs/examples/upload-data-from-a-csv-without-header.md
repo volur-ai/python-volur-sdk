@@ -10,6 +10,8 @@ materials CSV with a header and read more about sources see [upload-materials-da
 
 Let us say we have a file `materials.csv` with the following content:
 
+| <!-- --> |<!-- --> |<!-- --> |<!-- --> |<!-- --> |
+|-- |---------------|-----------|--------|---|
 | 1 | material-id-1 | False     | 0.5    | A |
 | 2 | material-id-2 | False     | 1.5    | A |
 | 3 | material-id-3 | True      | 2.5    | A |
