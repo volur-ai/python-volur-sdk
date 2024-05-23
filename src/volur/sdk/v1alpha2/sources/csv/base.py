@@ -2,6 +2,7 @@
 
 import abc
 from dataclasses import InitVar, dataclass, field
+from datetime import datetime
 from typing import Any, AsyncIterator, Literal
 
 from google.type.date_pb2 import Date
@@ -314,6 +315,27 @@ class CharacteristicColumnBool(CharacteristicColumn):
 
 @dataclass
 class CharacteristicColumnDate(CharacteristicColumn):
+    date_formats: list[str] = field(init=False)
+    default_date_format: list[str] = field(
+        default_factory=lambda: ["%d-%m-%Y"], init=False
+    )
+    extra_date_formats: list[str] = field(default_factory=list)
+
+    def __post_init__(
+        self: "CharacteristicColumnDate",
+        column_name: str | int,
+        characteristic_name: str,
+    ) -> None:
+        super().__post_init__(column_name, characteristic_name)
+        self.date_formats = [
+            *self.default_date_format,
+            "%Y-%m-%d",
+            "%Y/%m/%d",
+            "%d-%m-%Y",
+            "%d/%m/%Y",
+            *self.extra_date_formats,
+        ]
+
     def get_value(
         self: "CharacteristicColumnDate",
         data: dict[str | int, Any],
@@ -325,32 +347,27 @@ class CharacteristicColumnDate(CharacteristicColumn):
                 value=characteristic_pb2.CharacteristicValue(),
             )
 
-        try:
-            # Assuming _ is a dictionary with keys 'year', 'month', and 'day'
-            if not isinstance(_, dict):
-                raise ValueError(f"Value for {self.column_id} is not a dictionary")
+        elif isinstance(_, str):
+            for date_format in self.date_formats:
+                try:
+                    parsed_date = datetime.strptime(_, date_format)
 
-            # Ensure keys 'year', 'month', 'day' are in the dictionary and not None
-            for key in ["year", "month", "day"]:
-                if key not in _:
-                    raise ValueError(f"Value for {self.column_id} is missing {key}")
-                if _[key] is None:
-                    raise ValueError(f"Value for {self.column_id} has None for {key}")
-
-            year = int(_["year"])
-            month = int(_["month"])
-            day = int(_["day"])
-
-            # Construct the google.type.Date message
-            value = Date(year=year, month=month, day=day)
-
-            return characteristic_pb2.Characteristic(
-                name=self.characteristic_id,
-                value=characteristic_pb2.CharacteristicValue(
-                    value_date=value,
-                ),
+                    return characteristic_pb2.Characteristic(
+                        name=self.characteristic_id,
+                        value=characteristic_pb2.CharacteristicValue(
+                            value_date=Date(
+                                year=parsed_date.year,
+                                month=parsed_date.month,
+                                day=parsed_date.day,
+                            )
+                        ),
+                    )
+                except ValueError:
+                    pass
+            raise ValueError(
+                f"provided value {_} in column {self.column_id} has invalid date format"
             )
-        except ValueError as e:
+        else:
             raise ValueError(
                 f"provided value {_} in column {self.column_id} can not be interpreted as date characteristic"  # noqa: E501
-            ) from e
+            )
