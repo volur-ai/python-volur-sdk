@@ -335,10 +335,6 @@ class CharacteristicColumnDate(CharacteristicColumn):
         super().__post_init__(column_name, characteristic_name)
         self.date_formats = [
             *self.default_date_format,
-            "%Y-%m-%d",
-            "%Y/%m/%d",
-            "%d-%m-%Y",
-            "%d/%m/%Y",
             *self.extra_date_formats,
         ]
 
