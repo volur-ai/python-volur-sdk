@@ -317,7 +317,13 @@ class CharacteristicColumnBool(CharacteristicColumn):
 class CharacteristicColumnDate(CharacteristicColumn):
     date_formats: list[str] = field(init=False)
     default_date_format: list[str] = field(
-        default_factory=lambda: ["%d-%m-%Y"], init=False
+        default_factory=lambda: [
+          "%d-%m-%Y",
+          "%Y-%m-%d",
+          "%Y/%m/%d",
+          "%d-%m-%Y",
+          "%d/%m/%Y",
+        ], init=False
     )
     extra_date_formats: list[str] = field(default_factory=list)
 
