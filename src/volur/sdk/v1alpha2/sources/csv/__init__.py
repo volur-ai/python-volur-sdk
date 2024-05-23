@@ -3,6 +3,7 @@ from volur.sdk.v1alpha2.sources.csv.base import ProductsSource
 from .base import (
     CharacteristicColumn,
     CharacteristicColumnBool,
+    CharacteristicColumnDate,
     CharacteristicColumnFloat,
     CharacteristicColumnInteger,
     CharacteristicColumnString,
@@ -23,6 +24,7 @@ __all__ = [
     "CharacteristicColumnFloat",
     "CharacteristicColumnInteger",
     "CharacteristicColumnString",
+    "CharacteristicColumnDate",
     "Column",
     "MaterialsSource",
     "MaterialsCSVFileSource",
