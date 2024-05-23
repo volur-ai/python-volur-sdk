@@ -4,6 +4,7 @@ import abc
 from dataclasses import InitVar, dataclass, field
 from typing import Any, AsyncIterator, Literal
 
+from google.type.date_pb2 import Date
 from volur.pork.materials.v1alpha3 import material_pb2
 from volur.pork.products.v1alpha3 import product_pb2
 from volur.pork.shared.v1alpha1 import characteristic_pb2, quantity_pb2
@@ -35,6 +36,34 @@ class MaterialsSource:
     async def __anext__(
         self: "MaterialsSource",
     ) -> material_pb2.Material:
+        """You can fetch the next element in the asynchronous iterator."""
+        ...
+
+
+@dataclass
+class ProductsSource:
+    """
+    Base class for the product sources.
+    This class in an abstract class that defines the interface for the products CSV
+    source.
+    """
+
+    @abc.abstractmethod
+    def __aiter__(self: "ProductsSource") -> AsyncIterator[product_pb2.Product]:
+        """ProductSource implements Asynchronous Iterator.
+        This allows you to use any implementation of ProductsSource as
+        ```python title="example.py" linenums="1"
+        source = ProductSourceImplementation()
+        for _ in source:
+            # do something with Product
+        ```
+        """
+        ...
+
+    @abc.abstractmethod
+    async def __anext__(
+        self: "ProductsSource",
+    ) -> product_pb2.Product:
         """You can fetch the next element in the asynchronous iterator."""
         ...
 
@@ -284,28 +313,44 @@ class CharacteristicColumnBool(CharacteristicColumn):
 
 
 @dataclass
-class ProductsSource:
-    """
-    Base class for the product sources.
-    This class in an abstract class that defines the interface for the products CSV
-    source.
-    """
+class CharacteristicColumnDate(CharacteristicColumn):
+    def get_value(
+        self: "CharacteristicColumnDate",
+        data: dict[str | int, Any],
+    ) -> characteristic_pb2.Characteristic:
+        _ = data.get(self.column_id, None)
+        if _ is None or _ == "":
+            return characteristic_pb2.Characteristic(
+                name=self.characteristic_id,
+                value=characteristic_pb2.CharacteristicValue(),
+            )
 
-    @abc.abstractmethod
-    def __aiter__(self: "ProductsSource") -> AsyncIterator[product_pb2.Product]:
-        """ProductSource implements Asynchronous Iterator.
-        This allows you to use any implementation of ProductsSource as
-        ```python title="example.py" linenums="1"
-        source = ProductSourceImplementation()
-        for _ in source:
-            # do something with Product
-        ```
-        """
-        ...
+        try:
+            # Assuming _ is a dictionary with keys 'year', 'month', and 'day'
+            if not isinstance(_, dict):
+                raise ValueError(f"Value for {self.column_id} is not a dictionary")
 
-    @abc.abstractmethod
-    async def __anext__(
-        self: "ProductsSource",
-    ) -> product_pb2.Product:
-        """You can fetch the next element in the asynchronous iterator."""
-        ...
+            # Ensure keys 'year', 'month', 'day' are in the dictionary and not None
+            for key in ["year", "month", "day"]:
+                if key not in _:
+                    raise ValueError(f"Value for {self.column_id} is missing {key}")
+                if _[key] is None:
+                    raise ValueError(f"Value for {self.column_id} has None for {key}")
+
+            year = int(_["year"])
+            month = int(_["month"])
+            day = int(_["day"])
+
+            # Construct the google.type.Date message
+            value = Date(year=year, month=month, day=day)
+
+            return characteristic_pb2.Characteristic(
+                name=self.characteristic_id,
+                value=characteristic_pb2.CharacteristicValue(
+                    value_date=value,
+                ),
+            )
+        except ValueError as e:
+            raise ValueError(
+                f"provided value {_} in column {self.column_id} can not be interpreted as date characteristic"  # noqa: E501
+            ) from e
