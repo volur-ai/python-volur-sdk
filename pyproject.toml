@@ -15,7 +15,7 @@ packages = [
 
 [tool.poetry.dependencies]
 python = ">=3.11,<3.12"
-grpcio = ">=1.62,<1.64"
+grpcio = ">=1.62,<1.65"
 protobuf = "^5.26"
 pydantic-settings = "^2.2"
 loguru = "^0.7"
