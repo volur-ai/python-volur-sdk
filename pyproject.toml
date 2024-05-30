@@ -15,7 +15,8 @@ packages = [
 
 [tool.poetry.dependencies]
 python = ">=3.11,<3.12"
-grpcio = ">=1.62,<1.65"
+# Update these versions ones they are updated in https://github.com/volur-ai/apis/blob/main/buf.gen.yaml#L14
+grpcio = ">=1.62,<1.63"
 protobuf = "^5.26"
 pydantic-settings = "^2.2"
 loguru = "^0.7"
