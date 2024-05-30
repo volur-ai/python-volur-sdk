@@ -92,7 +92,7 @@ To deploy Azure Function in Python runtime, run these commands:
 
 1. Export `requirements.txt`
    ```shell
-   poetry export --output=requirements.tx --without-hashes
+   poetry export --output=requirements.txt --without-hashes
    ```
 
 2. Deploy Azure Function
@@ -156,7 +156,7 @@ functions are running. To deploy Azure Function in Docker, run these commands:
      --resource-group=<change-me-azure-resource-group-name>
    ```
 
-4. Provide credentials to Volur API in Azure Function App application settings
+5. Provide credentials to Volur API in Azure Function App application settings
    ```shell
     az functionapp config appsettings set \
        --name=<change-me-azure-function-app-name> \
