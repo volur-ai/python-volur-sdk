@@ -5,6 +5,7 @@ import grpc
 from google.rpc.status_pb2 import Status
 from loguru import logger
 from volur.api.v1alpha1.settings import VolurApiSettings
+from volur.pork.demand.v1alpha2 import demand_pb2, demand_pb2_grpc
 from volur.pork.materials.v1alpha3 import material_pb2, material_pb2_grpc
 from volur.pork.products.v1alpha3 import product_pb2, product_pb2_grpc
 
@@ -194,6 +195,96 @@ class VolurApiAsyncClient:
                 ):
                     logger.exception(
                         "error occurred while uploading products information",
+                    )
+            code: int
+            code, _ = rpc_error.code().value  # type: ignore[misc]
+            message = _ if (_ := rpc_error.details()) else ""
+            return Status(
+                code=code,
+                message=message,
+            )
+
+    async def upload_demand_information(
+        self: "VolurApiAsyncClient",
+        demand: AsyncIterator[demand_pb2.Demand],
+    ) -> Status:
+        """Uploads Demand Information to the Völur platform using the Völur
+        API.
+
+        This method is using a source to get the demand data and then send
+        it to the Völur API. This method is asynchronous and will return a
+        status of the operation.
+
+        Args:
+            demand: a source of demand data to be uploaded to the Völur
+                platform.
+
+        Returns:
+            The status of the operation.
+        """
+
+        async def generate_requests() -> (
+            AsyncIterator[demand_pb2.UploadDemandInformationRequest]
+        ):
+            try:
+                async for dem in demand:
+                    yield demand_pb2.UploadDemandInformationRequest(
+                        demand=dem,
+                    )
+            except Exception:
+                logger.exception(
+                    "error occurred while generating requests",
+                )
+
+        try:
+            logger.info("start uploading demand data")
+            channel = grpc.aio.secure_channel(
+                self.settings.address,
+                grpc.ssl_channel_credentials(),
+            )
+            stub = demand_pb2_grpc.DemandInformationServiceStub(channel)
+            requests = generate_requests()
+            stream = stub.UploadDemandInformation(
+                requests,  # type: ignore[arg-type]
+                metadata=(
+                    (
+                        "authorization",
+                        f"Bearer {self.settings.token.get_secret_value()}",
+                    ),
+                ),
+            )
+            while True:
+                response = await stream.read()  # type: ignore[attr-defined]
+                if response == grpc.aio.EOF:  # type: ignore[attr-defined]
+                    logger.info("successfully uploaded demand information")
+                    break
+                if response.HasField("status"):
+                    if response.status.code != 0:
+                        logger.error(
+                            f"error occurred while uploading demand information "
+                            f"{response.status.code} {response.status.message}",
+                        )
+                    else:
+                        logger.debug(
+                            "successfully uploaded demand information",
+                        )
+                else:
+                    raise ValueError("response from a server does not contain status")
+            return Status(code=0)
+        except grpc.aio.AioRpcError as rpc_error:
+            if rpc_error.code() == grpc.StatusCode.UNAUTHENTICATED:
+                logger.error(
+                    "used token in invalid,"
+                    "please set a valid token using"
+                    "`VOLUR_API_TOKEN` environment variable",
+                )
+            else:
+                with logger.contextualize(
+                    rpc_error_code=rpc_error.code(),
+                    rpc_error_details=rpc_error.details(),
+                ):
+                    logger.exception(
+                        "error occurred while uploading demand information",
                     )
             code: int
             code, _ = rpc_error.code().value  # type: ignore[misc]

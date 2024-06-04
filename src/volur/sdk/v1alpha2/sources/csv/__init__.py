@@ -1,4 +1,4 @@
-from volur.sdk.v1alpha2.sources.csv.base import ProductsSource
+from volur.sdk.v1alpha2.sources.csv.base import DemandSource, ProductsSource
 
 from .base import (
     CharacteristicColumn,
@@ -12,6 +12,7 @@ from .base import (
     QuantityColumn,
 )
 from .source import (
+    DemandCSVFileSource,
     MaterialsCSVFileSource,
     ProductsCSVFileSource,
 )
@@ -19,6 +20,8 @@ from .source import (
 __all__ = [
     "ProductsSource",
     "ProductsCSVFileSource",
+    "DemandSource",
+    "DemandCSVFileSource",
     "CharacteristicColumn",
     "CharacteristicColumnBool",
     "CharacteristicColumnFloat",
