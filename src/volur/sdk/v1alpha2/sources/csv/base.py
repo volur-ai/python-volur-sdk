@@ -6,6 +6,7 @@ from datetime import datetime
 from typing import Any, AsyncIterator, Literal
 
 from google.type.date_pb2 import Date
+from volur.pork.demand.v1alpha2 import demand_pb2
 from volur.pork.materials.v1alpha3 import material_pb2
 from volur.pork.products.v1alpha3 import product_pb2
 from volur.pork.shared.v1alpha1 import characteristic_pb2, quantity_pb2
@@ -65,6 +66,34 @@ class ProductsSource:
     async def __anext__(
         self: "ProductsSource",
     ) -> product_pb2.Product:
+        """You can fetch the next element in the asynchronous iterator."""
+        ...
+
+
+@dataclass
+class DemandSource:
+    """
+    Base class for the demand sources.
+    This class in an abstract class that defines the interface for the demand CSV
+    source.
+    """
+
+    @abc.abstractmethod
+    def __aiter__(self: "DemandSource") -> AsyncIterator[demand_pb2.Demand]:
+        """DemandSource implements Asynchronous Iterator.
+        This allows you to use any implementation of DemandSource as
+        ```python title="example.py" linenums="1"
+        source = DemandSourceImplementation()
+        for _ in source:
+            # do something with Demand
+        ```
+        """
+        ...
+
+    @abc.abstractmethod
+    async def __anext__(
+        self: "DemandSource",
+    ) -> demand_pb2.Demand:
         """You can fetch the next element in the asynchronous iterator."""
         ...
 

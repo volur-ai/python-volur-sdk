@@ -1,6 +1,7 @@
-from .csv import MaterialsSource, ProductsSource
+from .csv import DemandSource, MaterialsSource, ProductsSource
 
 __all__ = [
     "MaterialsSource",
     "ProductsSource",
+    "DemandSource",
 ]
