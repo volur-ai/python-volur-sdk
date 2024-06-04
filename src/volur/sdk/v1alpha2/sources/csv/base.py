@@ -6,6 +6,7 @@ from datetime import datetime
 from typing import Any, AsyncIterator, Literal
 
 from google.type.date_pb2 import Date
+from google.type.datetime_pb2 import Datetime
 from volur.pork.materials.v1alpha3 import material_pb2
 from volur.pork.products.v1alpha3 import product_pb2
 from volur.pork.shared.v1alpha1 import characteristic_pb2, quantity_pb2
@@ -362,6 +363,82 @@ class CharacteristicColumnDate(CharacteristicColumn):
                                 year=parsed_date.year,
                                 month=parsed_date.month,
                                 day=parsed_date.day,
+                            )
+                        ),
+                    )
+                except ValueError:
+                    pass
+            raise ValueError(
+                f"provided value {_} in column {self.column_id} has invalid date format"
+            )
+        else:
+            raise ValueError(
+                f"provided value {_} in column {self.column_id} can not be interpreted as date characteristic"  # noqa: E501
+            )
+
+
+@dataclass
+class CharacteristicColumnDatetime(CharacteristicColumn):
+    timestamp_formats: list[str] = field(init=False)
+    default_timestamp_format: list[str] = field(
+        default_factory=lambda: [
+            "%d-%m-%Y %H:%M:%S",
+            "%Y-%m-%d %H:%M:%S",
+            "%Y/%m/%d %H:%M:%S",
+            "%d-%m-%Y %H:%M:%S",
+            "%d/%m/%Y %H:%M:%S",
+            "%d-%m-%Y %I:%M:%S %p",
+            "%Y-%m-%d %I:%M:%S %p",
+            "%Y/%m/%d %I:%M:%S %p",
+            "%d-%m-%Y %I:%M:%S %p",
+            "%d/%m/%Y %I:%M:%S %p",
+            "%d-%m-%Y %H:%M:%S.%f",
+            "%Y-%m-%d %H:%M:%S.%f",
+            "%Y/%m/%d %H:%M:%S.%f",
+            "%d-%m-%Y %H:%M:%S.%f",
+            "%d/%m/%Y %H:%M:%S.%f",
+        ],
+        init=False,
+    )
+    extra_timestamp_formats: list[str] = field(default_factory=list)
+
+    def __post_init__(
+        self: "CharacteristicColumnDate",
+        column_name: str | int,
+        characteristic_name: str,
+    ) -> None:
+        super().__post_init__(column_name, characteristic_name)
+        self.timestamp_formats = [
+            *self.default_timestamp_format,
+            *self.extra_timestamp_formats,
+        ]
+
+    def get_value(
+        self: "CharacteristicColumnDate",
+        data: dict[str | int, Any],
+    ) -> characteristic_pb2.Characteristic:
+        _ = data.get(self.column_id, None)
+        if _ is None or _ == "":
+            return characteristic_pb2.Characteristic(
+                name=self.characteristic_id,
+                value=characteristic_pb2.CharacteristicValue(),
+            )
+
+        elif isinstance(_, str):
+            for timestamp_format in self.timestamp_formats:
+                try:
+                    parsed_timestamp = datetime.strptime(_, timestamp_format)
+
+                    return characteristic_pb2.Characteristic(
+                        name=self.characteristic_id,
+                        value=characteristic_pb2.CharacteristicValue(
+                            value_date=Datetime(
+                                year=parsed_timestamp.year,
+                                month=parsed_timestamp.month,
+                                day=parsed_timestamp.day,
+                                hours=parsed_timestamp.hour,
+                                minutes=parsed_timestamp.minute,
+                                seconds=parsed_timestamp.second,
                             )
                         ),
                     )
