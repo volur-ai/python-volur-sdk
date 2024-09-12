@@ -1,8 +1,9 @@
 import pytest
+
 from volur.api import VolurApiSettings
 
 
-@pytest.fixture()
+@pytest.fixture
 def expected_settings() -> VolurApiSettings:
     return VolurApiSettings(
         address="fake-address",

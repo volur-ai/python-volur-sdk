@@ -2,6 +2,7 @@ from typing import Any
 
 import pytest
 from google.type.date_pb2 import Date
+
 from volur.pork.shared.v1alpha1 import characteristic_pb2
 from volur.sdk.v1alpha2.sources.csv import CharacteristicColumnDate
 

@@ -2,6 +2,7 @@ import io
 from pathlib import Path
 
 import pytest
+
 from volur.pork.demand.v1alpha2 import demand_pb2
 from volur.pork.products.v1alpha3.product_pb2 import Product
 from volur.pork.shared.v1alpha1.characteristic_pb2 import (
@@ -20,7 +21,7 @@ from volur.sdk.v1alpha2.sources.csv import (
 )
 
 
-@pytest.fixture()
+@pytest.fixture
 def demand_csv_content() -> list[str]:
     return [
         "product,customer,plant,quantity,float_column,integer_column,string_column,bool_column",
@@ -32,7 +33,7 @@ def demand_csv_content() -> list[str]:
     ]
 
 
-@pytest.fixture()
+@pytest.fixture
 def csv_file(
     tmpdir: Path,
     demand_csv_content: list[str],
@@ -46,7 +47,7 @@ def csv_file(
     return str(path)
 
 
-@pytest.fixture()
+@pytest.fixture
 def csv_source(
     csv_file: str,
 ) -> DemandCSVFileSource:
@@ -77,7 +78,7 @@ def csv_source(
     )
 
 
-@pytest.fixture()
+@pytest.fixture
 def expected_demand() -> list[demand_pb2.Demand]:
     return [
         demand_pb2.Demand(
@@ -203,7 +204,7 @@ def expected_demand() -> list[demand_pb2.Demand]:
     ]
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_load_file(
     csv_source: DemandCSVFileSource,
     expected_demand: list[demand_pb2.Demand],
@@ -212,7 +213,7 @@ async def test_load_file(
     assert actual_demand == expected_demand
 
 
-@pytest.fixture()
+@pytest.fixture
 def buffered_csv(demand_csv_content: list[str]) -> io.BufferedIOBase:
     bio = io.BytesIO()
     for _ in demand_csv_content:
@@ -222,7 +223,7 @@ def buffered_csv(demand_csv_content: list[str]) -> io.BufferedIOBase:
     return bio
 
 
-@pytest.fixture()
+@pytest.fixture
 def io_buffered_csv_source(buffered_csv: io.BufferedIOBase) -> DemandCSVFileSource:
     return DemandCSVFileSource(
         path=buffered_csv,
@@ -251,7 +252,7 @@ def io_buffered_csv_source(buffered_csv: io.BufferedIOBase) -> DemandCSVFileSour
     )
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_load_from_io_buffered(
     io_buffered_csv_source: DemandCSVFileSource,
     expected_demand: list[demand_pb2.Demand],
@@ -262,7 +263,7 @@ async def test_load_from_io_buffered(
     assert actual_demand == expected_demand
 
 
-@pytest.fixture()
+@pytest.fixture
 def demand_csv_without_header_content() -> list[str]:
     return [
         "product-id-1,Customer1,Plant1,100,1.0,1,string-value,true",
@@ -273,7 +274,7 @@ def demand_csv_without_header_content() -> list[str]:
     ]
 
 
-@pytest.fixture()
+@pytest.fixture
 def demand_csv_without_header_file(
     tmpdir: Path,
     demand_csv_without_header_content: list[str],
@@ -287,7 +288,7 @@ def demand_csv_without_header_file(
     return str(path)
 
 
-@pytest.fixture()
+@pytest.fixture
 def csv_source_without_header(
     demand_csv_without_header_file: str,
 ) -> DemandCSVFileSource:
@@ -319,7 +320,7 @@ def csv_source_without_header(
     )
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_load_file_without_headers(
     csv_source_without_header: DemandCSVFileSource,
     expected_demand: list[demand_pb2.Demand],
@@ -328,7 +329,7 @@ async def test_load_file_without_headers(
     assert actual_demand == expected_demand
 
 
-@pytest.fixture()
+@pytest.fixture
 def buffered_csv_without_header(
     demand_csv_without_header_content: list[str],
 ) -> io.BufferedIOBase:
@@ -340,7 +341,7 @@ def buffered_csv_without_header(
     return bio
 
 
-@pytest.fixture()
+@pytest.fixture
 def io_buffered_csv_without_header_source(
     buffered_csv_without_header: io.BufferedIOBase,
 ) -> DemandCSVFileSource:
@@ -372,7 +373,7 @@ def io_buffered_csv_without_header_source(
     )
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_load_from_io_buffered_without_header(
     io_buffered_csv_without_header_source: DemandCSVFileSource,
     expected_demand: list[demand_pb2.Demand],
