@@ -179,6 +179,7 @@ class MaterialsCSVFileSource(MaterialsSource):
                                     strict=True,
                                 )
                             ),
+                            strict=False,
                         ),
                     )
                     yield self._create_material(data)
@@ -206,7 +207,7 @@ class MaterialsCSVFileSource(MaterialsSource):
                 strict=True,
             )
             for _ in reader:
-                data = dict(zip(range(number_of_columns), _))  # type: ignore[arg-type]
+                data = dict(zip(range(number_of_columns), _, strict=False))  # type: ignore[arg-type]
                 print(data)
                 yield self._create_material(data)  # type: ignore[arg-type]
         if isinstance(self.path, (str, Path)):
@@ -230,6 +231,7 @@ class MaterialsCSVFileSource(MaterialsSource):
                                     strict=True,
                                 )
                             ),
+                            strict=False,
                         ),
                     )
                     yield self._create_material(data)  # type: ignore[arg-type]
@@ -386,6 +388,7 @@ class ProductsCSVFileSource(ProductsSource):
                                     strict=True,
                                 )
                             ),
+                            strict=False,
                         ),
                     )
                     yield self._create_product(data)
@@ -413,7 +416,7 @@ class ProductsCSVFileSource(ProductsSource):
                 strict=True,
             )
             for _ in reader:
-                data = dict(zip(range(number_of_columns), _))  # type: ignore[arg-type]
+                data = dict(zip(range(number_of_columns), _, strict=False))  # type: ignore[arg-type]
                 print(data)
                 yield self._create_product(data)  # type: ignore[arg-type]
         if isinstance(self.path, (str, Path)):
@@ -437,6 +440,7 @@ class ProductsCSVFileSource(ProductsSource):
                                     strict=True,
                                 )
                             ),
+                            strict=False,
                         ),
                     )
                     yield self._create_product(data)  # type: ignore[arg-type]
@@ -599,6 +603,7 @@ class DemandCSVFileSource(DemandSource):
                                     strict=True,
                                 )
                             ),
+                            strict=False,
                         ),
                     )
                     yield self._create_demand(data)
@@ -626,7 +631,7 @@ class DemandCSVFileSource(DemandSource):
                 strict=True,
             )
             for _ in reader:
-                data = dict(zip(range(number_of_columns), _))  # type: ignore[arg-type]
+                data = dict(zip(range(number_of_columns), _, strict=False))  # type: ignore[arg-type]
                 print(data)
                 yield self._create_demand(data)  # type: ignore[arg-type]
         if isinstance(self.path, (str, Path)):
@@ -650,6 +655,7 @@ class DemandCSVFileSource(DemandSource):
                                     strict=True,
                                 )
                             ),
+                            strict=False,
                         ),
                     )
                     yield self._create_demand(data)  # type: ignore[arg-type]
