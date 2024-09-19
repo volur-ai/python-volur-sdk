@@ -1,6 +1,7 @@
 from typing import Any
 
 import pytest
+
 from volur.pork.shared.v1alpha1 import characteristic_pb2
 from volur.sdk.v1alpha2.sources.csv import CharacteristicColumnBool
 

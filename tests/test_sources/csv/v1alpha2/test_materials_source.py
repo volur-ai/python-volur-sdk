@@ -2,6 +2,7 @@ import io
 from pathlib import Path
 
 import pytest
+
 from volur.pork.materials.v1alpha3 import material_pb2
 from volur.pork.shared.v1alpha1.characteristic_pb2 import (
     Characteristic,
@@ -19,7 +20,7 @@ from volur.sdk.v1alpha2.sources.csv import (
 )
 
 
-@pytest.fixture()
+@pytest.fixture
 def materials_csv_content() -> list[str]:
     return [
         "id,plant,quantity,float_column,integer_column,string_column,bool_column",
@@ -31,7 +32,7 @@ def materials_csv_content() -> list[str]:
     ]
 
 
-@pytest.fixture()
+@pytest.fixture
 def csv_file(
     tmpdir: Path,
     materials_csv_content: list[str],
@@ -45,7 +46,7 @@ def csv_file(
     return str(path)
 
 
-@pytest.fixture()
+@pytest.fixture
 def csv_source(
     csv_file: str,
 ) -> MaterialsCSVFileSource:
@@ -75,7 +76,7 @@ def csv_source(
     )
 
 
-@pytest.fixture()
+@pytest.fixture
 def expected_materials() -> list[material_pb2.Material]:
     return [
         material_pb2.Material(
@@ -196,7 +197,7 @@ def expected_materials() -> list[material_pb2.Material]:
     ]
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_load_file(
     csv_source: MaterialsCSVFileSource,
     expected_materials: list[material_pb2.Material],
@@ -205,7 +206,7 @@ async def test_load_file(
     assert actual_materials == expected_materials
 
 
-@pytest.fixture()
+@pytest.fixture
 def buffered_csv(materials_csv_content: list[str]) -> io.BufferedIOBase:
     bio = io.BytesIO()
     for _ in materials_csv_content:
@@ -215,7 +216,7 @@ def buffered_csv(materials_csv_content: list[str]) -> io.BufferedIOBase:
     return bio
 
 
-@pytest.fixture()
+@pytest.fixture
 def io_buffered_csv_source(buffered_csv: io.BufferedIOBase) -> MaterialsCSVFileSource:
     return MaterialsCSVFileSource(
         path=buffered_csv,
@@ -243,7 +244,7 @@ def io_buffered_csv_source(buffered_csv: io.BufferedIOBase) -> MaterialsCSVFileS
     )
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_load_from_io_buffered(
     io_buffered_csv_source: MaterialsCSVFileSource,
     expected_materials: list[material_pb2.Material],
@@ -254,7 +255,7 @@ async def test_load_from_io_buffered(
     assert actual_materials == expected_materials
 
 
-@pytest.fixture()
+@pytest.fixture
 def materials_csv_without_header_content() -> list[str]:
     return [
         "material-id-1,Plant1,100,1.0,1,string-value,true",
@@ -265,7 +266,7 @@ def materials_csv_without_header_content() -> list[str]:
     ]
 
 
-@pytest.fixture()
+@pytest.fixture
 def materials_csv_without_header_file(
     tmpdir: Path,
     materials_csv_without_header_content: list[str],
@@ -279,7 +280,7 @@ def materials_csv_without_header_file(
     return str(path)
 
 
-@pytest.fixture()
+@pytest.fixture
 def csv_source_without_header(
     materials_csv_without_header_file: str,
 ) -> MaterialsCSVFileSource:
@@ -310,7 +311,7 @@ def csv_source_without_header(
     )
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_load_file_without_headers(
     csv_source_without_header: MaterialsCSVFileSource,
     expected_materials: list[material_pb2.Material],
@@ -319,7 +320,7 @@ async def test_load_file_without_headers(
     assert actual_materials == expected_materials
 
 
-@pytest.fixture()
+@pytest.fixture
 def buffered_csv_without_header(
     materials_csv_without_header_content: list[str],
 ) -> io.BufferedIOBase:
@@ -331,7 +332,7 @@ def buffered_csv_without_header(
     return bio
 
 
-@pytest.fixture()
+@pytest.fixture
 def io_buffered_csv_without_header_source(
     buffered_csv_without_header: io.BufferedIOBase,
 ) -> MaterialsCSVFileSource:
@@ -362,7 +363,7 @@ def io_buffered_csv_without_header_source(
     )
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_load_from_io_buffered_without_header(
     io_buffered_csv_without_header_source: MaterialsCSVFileSource,
     expected_materials: list[material_pb2.Material],

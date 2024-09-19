@@ -2,6 +2,7 @@ import io
 from pathlib import Path
 
 import pytest
+
 from volur.pork.products.v1alpha3 import product_pb2
 from volur.pork.shared.v1alpha1.characteristic_pb2 import (
     Characteristic,
@@ -14,7 +15,7 @@ from volur.sdk.v1alpha2.sources.csv.base import (
 from volur.sdk.v1alpha2.sources.csv.source import ProductsCSVFileSource
 
 
-@pytest.fixture()
+@pytest.fixture
 def products_csv_content() -> list[str]:
     return [
         "id,plant_code,description",
@@ -25,7 +26,7 @@ def products_csv_content() -> list[str]:
     ]
 
 
-@pytest.fixture()
+@pytest.fixture
 def csv_file(
     tmpdir: Path,
     products_csv_content: list[str],
@@ -39,7 +40,7 @@ def csv_file(
     return str(path)
 
 
-@pytest.fixture()
+@pytest.fixture
 def csv_source(
     csv_file: str,
 ) -> ProductsCSVFileSource:
@@ -59,7 +60,7 @@ def csv_source(
     )
 
 
-@pytest.fixture()
+@pytest.fixture
 def expected_products() -> list[product_pb2.Product]:
     return [
         product_pb2.Product(
@@ -117,7 +118,7 @@ def expected_products() -> list[product_pb2.Product]:
     ]
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_load_file(
     csv_source: ProductsCSVFileSource,
     expected_products: list[product_pb2.Product],
@@ -126,7 +127,7 @@ async def test_load_file(
     assert actual_products == expected_products
 
 
-@pytest.fixture()
+@pytest.fixture
 def buffered_csv(products_csv_content: list[str]) -> io.BufferedIOBase:
     bio = io.BytesIO()
     for _ in products_csv_content:
@@ -136,7 +137,7 @@ def buffered_csv(products_csv_content: list[str]) -> io.BufferedIOBase:
     return bio
 
 
-@pytest.fixture()
+@pytest.fixture
 def io_buffered_csv_source(buffered_csv: io.BufferedIOBase) -> ProductsCSVFileSource:
     return ProductsCSVFileSource(
         path=buffered_csv,
@@ -154,7 +155,7 @@ def io_buffered_csv_source(buffered_csv: io.BufferedIOBase) -> ProductsCSVFileSo
     )
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_load_from_io_buffered(
     io_buffered_csv_source: ProductsCSVFileSource,
     expected_products: list[product_pb2.Product],
@@ -165,7 +166,7 @@ async def test_load_from_io_buffered(
     assert actual_products == expected_products
 
 
-@pytest.fixture()
+@pytest.fixture
 def products_csv_without_header_content() -> list[str]:
     return [
         "product-id-1,Plant1,Description1",
@@ -175,7 +176,7 @@ def products_csv_without_header_content() -> list[str]:
     ]
 
 
-@pytest.fixture()
+@pytest.fixture
 def products_csv_without_header_file(
     tmpdir: Path,
     products_csv_without_header_content: list[str],
@@ -189,7 +190,7 @@ def products_csv_without_header_file(
     return str(path)
 
 
-@pytest.fixture()
+@pytest.fixture
 def csv_source_without_header(
     products_csv_without_header_file: str,
 ) -> ProductsCSVFileSource:
@@ -210,7 +211,7 @@ def csv_source_without_header(
     )
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_load_file_without_headers(
     csv_source_without_header: ProductsCSVFileSource,
     expected_products: list[product_pb2.Product],
@@ -219,7 +220,7 @@ async def test_load_file_without_headers(
     assert actual_products == expected_products
 
 
-@pytest.fixture()
+@pytest.fixture
 def buffered_csv_without_header(
     products_csv_without_header_content: list[str],
 ) -> io.BufferedIOBase:
@@ -231,7 +232,7 @@ def buffered_csv_without_header(
     return bio
 
 
-@pytest.fixture()
+@pytest.fixture
 def io_buffered_csv_without_header_source(
     buffered_csv_without_header: io.BufferedIOBase,
 ) -> ProductsCSVFileSource:
@@ -252,7 +253,7 @@ def io_buffered_csv_without_header_source(
     )
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_load_from_io_buffered_without_header(
     io_buffered_csv_without_header_source: ProductsCSVFileSource,
     expected_products: list[product_pb2.Product],
