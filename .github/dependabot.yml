@@ -4,6 +4,12 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    ignore:
+        # Ignore all grpcio and protobuf minor updates
+      - dependency-name: "grpcio"
+        update-types: ["version-update:semver-minor"]
+      - dependency-name: "protobuf"
+        update-types: ["version-update:semver-minor"]
   - package-ecosystem: "pip"
     directory: "/poetry"
     schedule:
