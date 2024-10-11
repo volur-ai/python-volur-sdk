@@ -297,9 +297,9 @@ filelock==3.13.4 \
     # via
     #   cachecontrol
     #   virtualenv
-idna==3.6 \
-    --hash=sha256:9ecdbbd083b06798ae1e86adcbfe8ab1479cf864e4ee30fe4e46a003d12491ca \
-    --hash=sha256:c05567e9c24a6b9faaa835c4821bad0590fbb9d5779e7caa6e1cc4978e7eb24f
+idna==3.7 \
+    --hash=sha256:028ff3aadf0609c1fd278d8ea3089299412a7a8b9bd005dd08b9f8285bcb5cfc \
+    --hash=sha256:82fee1fc78add43492d3a1898bfa6d8a904cc97d8427f683ed8e798d07761aa0
     # via requests
 importlib-metadata==7.1.0 \
     --hash=sha256:30962b96c0c223483ed6cc7280e7f0199feb01a0e40cfae4d4450fc6fab1f570 \
@@ -398,7 +398,7 @@ pexpect==4.9.0 \
 pip-tools==7.4.1 \
     --hash=sha256:4c690e5fbae2f21e87843e89c26191f0d9454f362d8acdbd695716493ec8b3a9 \
     --hash=sha256:864826f5073864450e24dbeeb85ce3920cdfb09848a3d69ebf537b521f14bcc9
-    # via -r poetry/requirements.in
+    # via -r requirements.in
 pkginfo==1.10.0 \
     --hash=sha256:5df73835398d10db79f8eecd5cd86b1f6d29317589ea70796994d49399af6297 \
     --hash=sha256:889a6da2ed7ffc58ab5b900d888ddce90bce912f2d2de1dc1c26f4cb9fe65097
@@ -413,7 +413,7 @@ poetry==1.8.3 \
     --hash=sha256:67f4eb68288eab41e841cc71a00d26cf6bdda9533022d0189a145a34d0a35f48 \
     --hash=sha256:88191c69b08d06f9db671b793d68f40048e8904c0718404b63dcc2b5aec62d13
     # via
-    #   -r poetry/requirements.in
+    #   -r requirements.in
     #   poetry-plugin-export
     #   poetry-plugin-upgrade
 poetry-core==1.9.0 \
@@ -429,7 +429,7 @@ poetry-plugin-export==1.7.1 \
 poetry-plugin-upgrade==0.2.0 \
     --hash=sha256:379d18a31a9e7d849481890381c77818c13f10dec1322c7f630cd8490e41b822 \
     --hash=sha256:acaa0eda684d20613dda3775d6a6836549e01eec36ee22e5c26d27953db9b6d3
-    # via -r poetry/requirements.in
+    # via -r requirements.in
 ptyprocess==0.7.0 \
     --hash=sha256:4b41f3967fce3af57cc7e94b888626c18bf37a083e3651ca8feeb66d492fef35 \
     --hash=sha256:5c5d0a3b48ceee0b48485e0c26037c0acd7d29765ca3fbb5cb3831d347423220
