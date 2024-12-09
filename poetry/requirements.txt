@@ -398,10 +398,10 @@ pexpect==4.9.0 \
 pip-tools==7.4.1 \
     --hash=sha256:4c690e5fbae2f21e87843e89c26191f0d9454f362d8acdbd695716493ec8b3a9 \
     --hash=sha256:864826f5073864450e24dbeeb85ce3920cdfb09848a3d69ebf537b521f14bcc9
-    # via -r requirements.in
-pkginfo==1.10.0 \
-    --hash=sha256:5df73835398d10db79f8eecd5cd86b1f6d29317589ea70796994d49399af6297 \
-    --hash=sha256:889a6da2ed7ffc58ab5b900d888ddce90bce912f2d2de1dc1c26f4cb9fe65097
+    # via -r poetry/requirements.in
+pkginfo==1.12.0 \
+    --hash=sha256:8ad91a0445a036782b9366ef8b8c2c50291f83a553478ba8580c73d3215700cf \
+    --hash=sha256:dcd589c9be4da8973eceffa247733c144812759aa67eaf4bbf97016a02f39088
     # via poetry
 platformdirs==4.2.0 \
     --hash=sha256:0614df2a2f37e1a662acbd8e2b25b92ccf8632929bc6d43467e17fe89c75e068 \
@@ -409,16 +409,16 @@ platformdirs==4.2.0 \
     # via
     #   poetry
     #   virtualenv
-poetry==1.8.3 \
-    --hash=sha256:67f4eb68288eab41e841cc71a00d26cf6bdda9533022d0189a145a34d0a35f48 \
-    --hash=sha256:88191c69b08d06f9db671b793d68f40048e8904c0718404b63dcc2b5aec62d13
+poetry==1.8.5 \
+    --hash=sha256:5505fba69bf2a792b5d7402d21839c853644337392b745109b86a23010cce5f3 \
+    --hash=sha256:eb2c88d224f58f36df8f7b36d6c380c07d1001bca28bde620f68fc086e881b70
     # via
-    #   -r requirements.in
+    #   -r poetry/requirements.in
     #   poetry-plugin-export
     #   poetry-plugin-upgrade
-poetry-core==1.9.0 \
-    --hash=sha256:4e0c9c6ad8cf89956f03b308736d84ea6ddb44089d16f2adc94050108ec1f5a1 \
-    --hash=sha256:fa7a4001eae8aa572ee84f35feb510b321bd652e5cf9293249d62853e1f935a2
+poetry-core==1.9.1 \
+    --hash=sha256:6f45dd3598e0de8d9b0367360253d4c5d4d0110c8f5c71120a14f0e0f116c1a0 \
+    --hash=sha256:7a2d49214bf58b4f17f99d6891d947a9836c9899a67a5069f52d7b67217f61b8
     # via
     #   poetry
     #   poetry-plugin-export
@@ -429,7 +429,7 @@ poetry-plugin-export==1.7.1 \
 poetry-plugin-upgrade==0.2.0 \
     --hash=sha256:379d18a31a9e7d849481890381c77818c13f10dec1322c7f630cd8490e41b822 \
     --hash=sha256:acaa0eda684d20613dda3775d6a6836549e01eec36ee22e5c26d27953db9b6d3
-    # via -r requirements.in
+    # via -r poetry/requirements.in
 ptyprocess==0.7.0 \
     --hash=sha256:4b41f3967fce3af57cc7e94b888626c18bf37a083e3651ca8feeb66d492fef35 \
     --hash=sha256:5c5d0a3b48ceee0b48485e0c26037c0acd7d29765ca3fbb5cb3831d347423220
@@ -570,9 +570,9 @@ urllib3==2.2.2 \
     # via
     #   dulwich
     #   requests
-virtualenv==20.25.1 \
-    --hash=sha256:961c026ac520bac5f69acb8ea063e8a4f071bcc9457b9c1f28f6b085c511583a \
-    --hash=sha256:e08e13ecdca7a0bd53798f356d5831434afa5b07b93f0abdf0797b7a06ffe197
+virtualenv==20.28.0 \
+    --hash=sha256:23eae1b4516ecd610481eda647f3a7c09aea295055337331bb4e6892ecce47b0 \
+    --hash=sha256:2c9c3262bb8e7b87ea801d715fae4495e6032450c71d2309be9550e7364049aa
     # via poetry
 wheel==0.43.0 \
     --hash=sha256:465ef92c69fa5c5da2d1cf8ac40559a8c940886afcef87dcf14b9470862f1d85 \
